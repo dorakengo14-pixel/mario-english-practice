@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍄 マリオ映画 英語練習</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f4f0;color:#1a1a1a;font-size:15px;line-height:1.6}
+header{background:#e8281e;color:#fff;padding:1rem 1.25rem;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+header .icon{font-size:28px}
+header h1{font-size:16px;font-weight:700}
+header p{font-size:12px;opacity:.85;margin-top:2px}
+.hint{font-size:11px;background:rgba(255,255,255,.15);padding:4px 10px;border-radius:20px;margin-top:6px;display:inline-block}
+.col-labels{display:grid;grid-template-columns:1fr 1fr;background:#2c2c2a;color:#ccc;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:6px 14px;position:sticky;top:72px;z-index:9}
+.col-labels span:first-child{border-right:1px solid #444}
+.col-labels span:last-child{padding-left:14px}
+main{padding:1rem;max-width:900px;margin:0 auto}
+.scene{margin-bottom:1.5rem}
+.scene-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#888;margin-bottom:6px;padding-left:2px}
+.card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e0ddd6;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #f0ede6}
+.row:first-child{border-top:none}
+.cell{padding:10px 14px;font-size:14px;line-height:1.7}
+.cell.en{border-right:1px solid #f0ede6;color:#1a1a1a}
+.cell.ja{color:#555;font-size:13.5px}
+.speaker{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin-bottom:4px;letter-spacing:.04em}
+.sp-bowser{background:#fde8e2;color:#8b2500}
+.sp-mario{background:#ddeeff;color:#003d7a}
+.sp-luigi{background:#e6f5d8;color:#2d5e0a}
+.sp-toad{background:#fff3d6;color:#7a4500}
+.sp-spike{background:#ffe4e4;color:#8b0000}
+.sp-princess{background:#fce8f3;color:#7a1a4a}
+.sp-mom{background:#f0ede8;color:#4a4440}
+.sp-dad{background:#f0ede8;color:#4a4440}
+.sp-guard{background:#ebebeb;color:#555}
+.sp-council{background:#eeedfe;color:#3c3489}
+
+/* Annotated word spans */
+.w{background:#fff8e1;border-bottom:2px dotted #f0a500;cursor:pointer;border-radius:2px;padding:0 1px;transition:background .15s}
+.w:hover,.w:active{background:#ffe082}
+
+/* Popup */
+#popup{display:none;position:fixed;z-index:2000;background:#1c1c1e;color:#f0f0f0;border-radius:12px;padding:14px 16px 12px;max-width:300px;min-width:200px;box-shadow:0 6px 28px rgba(0,0,0,.45);font-size:13px;line-height:1.6}
+#popup.show{display:block}
+#popup .pw{font-size:16px;font-weight:700;color:#ffd54f;margin-bottom:6px;padding-right:20px}
+#popup .pm{color:#e8e8e8;margin-bottom:0}
+#popup .pn{font-size:12px;color:#aaa;border-top:1px solid #333;padding-top:7px;margin-top:7px}
+#popup .pcls{position:absolute;top:10px;right:12px;font-size:18px;cursor:pointer;color:#888;line-height:1;padding:2px}
+
+/* Hamburger FAB */
+.fab{position:fixed;top:0.9rem;right:1rem;z-index:500;width:52px;height:52px;border-radius:50%;background:#e8281e;color:#fff;border:none;font-size:22px;cursor:pointer;box-shadow:0 3px 16px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;line-height:1;transition:background .15s}
+.fab:active{background:#c0211a}
+/* TOC overlay + panel */
+.toc-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:450}
+.toc-overlay.open{display:block}
+.toc-panel{position:fixed;top:0;right:-300px;width:280px;height:100%;background:#fff;z-index:460;overflow-y:auto;transition:right .25s ease;display:flex;flex-direction:column}
+.toc-panel.open{right:0}
+.toc-head{padding:1rem 1rem .75rem;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between;background:#e8281e;color:#fff}
+.toc-head h2{font-size:15px;font-weight:700;margin:0}
+.toc-close{background:none;border:none;font-size:24px;cursor:pointer;color:rgba(255,255,255,.8);line-height:1;padding:2px 4px}
+.toc-list{list-style:none;padding:.5rem 0;flex:1}
+.toc-list li a{display:flex;align-items:center;gap:10px;padding:.75rem 1rem;font-size:14px;color:#1a1a1a;text-decoration:none;border-left:3px solid transparent;transition:background .1s}
+.toc-list li a:active{background:#fef2f2}
+.toc-num{min-width:24px;height:24px;border-radius:50%;background:#e8281e;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.toc-footer{padding:.75rem 1rem;border-top:1px solid #eee;font-size:11px;color:#aaa;text-align:center}
+@media(max-width:560px){
+  .col-labels{display:none}
+  .row{grid-template-columns:1fr}
+  .cell.en{border-right:none;border-bottom:1px solid #f0ede6;background:#fafaf8}
+  .cell.ja{padding-top:8px;color:#666}
+  #popup{max-width:calc(100vw - 32px)}
+  .toc-panel{width:100%;right:-105%}
+}
+footer{text-align:center;font-size:12px;color:#aaa;padding:2rem 1rem 5rem}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="icon">🍄</span>
+  <div>
+    <h1>The Super Mario Bros. Movie — 英語練習</h1>
+    <p>左：English　／　右：日本語訳</p>
+    <span class="hint">🔍 黄色い単語をタップ → 解説ポップアップ</span>
+  </div>
+</header>
+
+<div class="col-labels"><span>English</span><span style="padding-left:14px">日本語</span></div>
+
+<!-- POPUP -->
+<div id="popup" role="dialog" aria-modal="true">
+  <span class="pcls" id="popclose" aria-label="閉じる">×</span>
+  <div class="pw" id="pw"></div>
+  <div class="pm" id="pm"></div>
+  <div class="pn" id="pn"></div>
+</div>
+
+<main>
+
+<!-- シーン1 -->
+<div class="scene" id="scene1">
+<p class="scene-label">シーン 1 — クッパ登場</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      <span class="w" data-w="Behold!" data-m="見よ！ 〔命令形〕" data-n="古風・劇的な表現。be + hold の命令形で「しっかり見よ」。現代では演説・演技でよく使われる。発音：/bɪˈhoʊld/">Behold!</span> The <span class="w" data-w="king of the Koopas" data-m="クッパ族の王" data-n="「of ＋ 名詞」で所有・帰属を表す。'king of the ～' は称号の定番パターン。">king of the Koopas</span>!
+    </div>
+    <div class="cell ja">見よ！クッパ大王だ！</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      That is <span class="w" data-w="but a taste" data-m="ほんの味見に過ぎない＝序の口" data-n="ここの「but」は接続詞ではなく副詞で「only / merely（～に過ぎない）」の意味。例：She is but a child.（彼女はただの子供だ）">but a taste</span> of our <span class="w" data-w="fury" data-m="激しい怒り・猛威" data-n="発音：/ˈfjʊəri/。形容詞形は furious /ˈfjʊəriəs/。「私たちの怒りのほんの一端」という意味。">fury</span>.<br>
+      Do you <span class="w" data-w="yield?" data-m="降参するか？／屈服するか？" data-n="発音：/jiːld/。語頭の「y」は日本語の「イ」に近い。他にも「産出する」「（道を）譲る」などの意味がある。交通標識の YIELD は「譲れ」。">yield?</span>
+    </div>
+    <div class="cell ja">これはほんの序の口だ。<br>降参するか？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">
+      I do not.<br>
+      <span class="w" data-w="I've finally found it." data-m="ついに見つけた。" data-n="現在完了形（have + 過去分詞）。「今この瞬間に達成した」という達成感を表す。finally（ついに）と組み合わせることで長年の目標達成のニュアンスが強まる。">I've finally found it.</span><br>
+      And now <span class="w" data-w="no one can stop me" data-m="誰も私を止められない" data-n="no one = nobody。can は「能力・可能性」を表す助動詞。「誰一人として私を止める力はない」という強い宣言。">no one can stop me</span>!
+    </div>
+    <div class="cell ja">しない。<br>ついに見つけた。<br>もう誰にも止められない！</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン2 -->
+<div class="scene" id="scene2">
+<p class="scene-label">シーン 2 — CMの話</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en">You were great.</div>
+    <div class="cell ja">すごかったよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">
+      I was great?<br>
+      <span class="w" data-w="Are you kidding me?" data-m="冗談でしょ？／本気で言ってるの？" data-n="口語の定番フレーズ。kid = からかう・冗談を言う。= Are you joking? / No way! と同じニュアンス。強い驚きや信じられない気持ちを表す。">Are you kidding me?</span><br>
+      You were great!
+    </div>
+    <div class="cell ja">僕が？冗談でしょ？<br>君こそすごかった！</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-luigi">Luigi</span><br>
+      I am so glad we spent our <span class="w" data-w="life savings" data-m="全財産／生涯の貯蓄すべて" data-n="savings は「貯蓄」で必ず複数形。life savings = 人生をかけて貯めたお金全部。「全財産を使い果たした」という皮肉なニュアンス。">life savings</span> on this <span class="w" data-w="commercial" data-m="テレビCM／宣伝広告" data-n="発音：/kəˈmɜːrʃl/。名詞として「CM・広告」、形容詞として「商業的な」の2つの意味がある。">commercial</span>.
+    </div>
+    <div class="cell ja">全財産をこのCMに使って本当によかった。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      That is not a commercial.<br>
+      That is <span class="w" data-w="cinema" data-m="映画（芸術としての）／映画館" data-n="発音：/ˈsɪnəmə/。単なる「映画（movie）」ではなく、芸術作品としての「映画」を指す格調高い言葉。マリオが自分たちのCMを「映画だ！」と主張している場面。">cinema</span>.
+    </div>
+    <div class="cell ja">あれはCMじゃない。映画だ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">
+      Uh, what about the <span class="w" data-w="accents?" data-m="（言葉の）訛り・アクセント" data-n="ここでは「イタリア系アメリカ人の訛り」を指す。accent には「強調」「アクセント記号」「訛り」の意味がある。映画でマリオたちがイタリア風の訛りを演じている場面。">accents?</span><br>
+      Is it... is it <span class="w" data-w="too much?" data-m="やり過ぎ？／度を超えている？" data-n="too ＋ 形容詞で「～すぎる」。too much = 量・程度が過剰。口語では「大げさすぎる」「やりすぎ」の意味でよく使う。">too much?</span> Too much-a?
+    </div>
+    <div class="cell ja">ねえ、アクセントはどうかな？<br>やり過ぎかな？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">It's-a <span class="w" data-w="perfect" data-m="完璧！" data-n="「It's-a perfect」のように語尾に「-a」を付けるのはイタリア訛りの英語を表している（It's a perfect の変形）。映画の笑いどころ。">perfect</span>.</div>
+    <div class="cell ja">パーフェクトだよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Okay, <span class="w" data-w="I'm gonna trust you." data-m="あなたを信じます。" data-n="gonna = going to の口語短縮形。trust = 信頼する・信じる。「I'll trust you」より少しカジュアルな言い回し。">I'm gonna trust you.</span></div>
+    <div class="cell ja">わかった、信じるよ。</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン3 -->
+<div class="scene" id="scene3">
+<p class="scene-label">シーン 3 — スパイク登場</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-spike">Spike</span><br>
+      <span class="w" data-w="Well, well, well," data-m="おやおやおや" data-n="3回繰り返すことで、驚き・皮肉・見下しのニュアンスを強調する定型表現。誰かを見つけて「やれやれ」「ほほう」と言う時に使う。">Well, well, well,</span>
+      <span class="w" data-w="if it isn't" data-m="なんと〜じゃないか" data-n="「if it isn't ＋ 人名/物」で驚きや皮肉を込めた定型表現。文字通りには「もし〜でないとしたら」だが、実際には「まさに〜だ」という強調・皮肉の意味になる。">if it isn't</span> Brooklyn's favorite <span class="w" data-w="failures" data-m="失敗者たち" data-n="発音：/ˈfeɪljərz/。fail（失敗する）の名詞形 failure の複数形。「ブルックリン一の失敗者たち」と皮肉っている。">failures</span>, the <span class="w" data-w="Stupid" data-m="バカな・頭の悪い" data-n="発音：/ˈstjuːpɪd/。口語でよく使う侮辱語。Dumb も同じ意味でよく使われる。">Stupid</span> Mario Brothers.
+    </div>
+    <div class="cell ja">おやおやおや、ブルックリン一の失敗作、バカのマリオブラザーズじゃないか。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>Ah, great. Spike's here. Hey, Spike.</div>
+    <div class="cell ja">あー、最悪。スパイクだ。やあ、スパイク。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-spike">Spike</span><br>
+      Tell me, have you even gotten one call since you <span class="w" data-w="left me" data-m="私のもとを去った＝辞めた" data-n="leave（去る・辞める）の過去形 left。「leave + 人」で「（その人のそばを）離れる・辞める」の意味。ここでは「俺の会社を辞めて」というニュアンス。">left me</span> to start your <span class="w" data-w="dumb company?" data-m="くだらない会社" data-n="dumb /dʌm/ はもともと「口がきけない」の意味だが、口語では stupid（バカな）と同じ意味で使われる。">dumb company?</span>
+    </div>
+    <div class="cell ja">教えてくれよ、俺のところを辞めてバカ会社を始めてから、一件でも電話があったか？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      <span class="w" data-w="As a matter of fact," data-m="実は・実際のところ" data-n="「実を言うと」「事実として言えば」という意味のフレーズ。相手の予想を覆す情報を続ける時によく使う。In fact と同じ意味。">As a matter of fact,</span> Spike, we have. Our mom called, and she said, "Oh, boys, that's the best commercial <span class="w" data-w="I've ever seen." data-m="今まで見た中で一番の" data-n="現在完了 + ever（今まで）の最上級表現。「I've ever ＋ 過去分詞」= 今まで経験した中で最も〜。This is the best movie I've ever seen. のように使う。">I've ever seen.</span>" And I said, "Thank you very much, Mother. <span class="w" data-w="We're very proud of it." data-m="とても誇りに思っています。" data-n="be proud of 〜 = 〜を誇りに思う。proud /praʊd/ の発音に注意（プラウド）。">We're very proud of it.</span>" So, <span class="w" data-w="boom!" data-m="どうだ！／決まった！" data-n="口語の感嘆表現。「ほら見ろ！」「決定！」という勝ち誇りや強調に使う。Boom! だけで一文として使われることが多い。">boom!</span>
+    </div>
+    <div class="cell ja">実はあったんだよ、スパイク。ママから電話があって、「今まで見た中で一番素晴らしいCMよ」って言ってくれた。僕は「ありがとう、お母さん。誇りに思ってます」って答えたんだ。どうだ！</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-spike">Spike</span><br>
+      Good luck <span class="w" data-w="running a business" data-m="会社・事業を経営すること" data-n="run a business = 事業を経営する。run には「走る」の他に「経営する・運営する」の重要な意味がある。例：She runs a restaurant.（彼女はレストランを経営している）">running a business</span> with this <span class="w" data-w="idiot" data-m="バカ・間抜け" data-n="発音：/ˈɪdiət/。「イディオット」。強い侮辱語。stupid / fool / moron も同様の意味で使われる。">idiot</span>.
+    </div>
+    <div class="cell ja">こんなバカと商売、頑張ってな。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      Say that again about my brother, and you're gonna <span class="w" data-w="regret it." data-m="後悔するぞ。" data-n="発音：/rɪˈɡrɛt/。re-（再び）+ 古フランス語 greter（泣き叫ぶ）が語源。「後悔する」の意。「you're gonna regret it」は脅しの定型表現。">regret it.</span>
+    </div>
+    <div class="cell ja">もう一度兄貴のことをそう言ったら、後悔させてやる。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-spike">Spike</span><br>
+      <span class="w" data-w="Get this through your tiny brain," data-m="その小さな頭に叩き込め" data-n="「get something through one's brain」= 頭に叩き込む・理解させる の慣用表現。tiny = とても小さい。相手を馬鹿にしながら「よく聞け」と言う時に使う。">Get this through your tiny brain,</span> Mario. <span class="w" data-w="You're a joke," data-m="お前は笑い者だ" data-n="「be a joke」= 笑い者・話にならない存在。「That's a joke」（冗談みたいだ）とは少し違い、人に使うと強い侮辱になる。">You're a joke,</span> and you always will be.
+    </div>
+    <div class="cell ja">その小さな頭に刻み込め、マリオ。お前は笑い者だ、これからもずっとな。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-luigi">Luigi</span><br>
+      Are you <span class="w" data-w="insane?" data-m="正気か？／頭おかしいの？" data-n="発音：/ɪnˈseɪn/。in（否定）+ sane（正気の）= 正気でない・狂っている。口語では crazy と同じ意味で「バカじゃないの？」という強い驚きに使う。">insane?</span> He's <span class="w" data-w="three times your size." data-m="お前の3倍の大きさだ" data-n="「X times + 所有格 + 名詞」で「〜の X 倍」の意味。例：twice my age（私の2倍の年齢）。比較の倍数表現は英語の重要文法。">three times your size.</span>
+    </div>
+    <div class="cell ja">正気か？あいつはお前の3倍の大きさだぞ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      Luigi, come on. You know, <span class="w" data-w="you can't be scared all the time." data-m="いつもビクビクしてちゃだめだ" data-n="be scared = 怖がっている（状態）。be動詞＋形容詞で「〜の状態にある」。all the time = いつも・ずっと。scared /skɛrd/ の発音に注意。">you can't be scared all the time.</span>
+    </div>
+    <div class="cell ja">ルイージ、行こう。いつもビビってちゃだめだぞ。</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン4 -->
+<div class="scene" id="scene4">
+<p class="scene-label">シーン 4 — 初仕事</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>Hello. Super Mario Brothers.</div>
+    <div class="cell ja">はい、スーパーマリオブラザーズです。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">
+      A <span class="w" data-w="drip" data-m="水漏れ・水のしずく" data-n="発音：/drɪp/。液体がポタポタ垂れることや、その音・水漏れ自体を指す。faucet drip = 蛇口の水漏れ。">drip</span> in your <span class="w" data-w="faucet?" data-m="蛇口（アメリカ英語）" data-n="発音：/ˈfɔːsɪt/。アメリカ英語で「蛇口」。イギリス英語では tap /tæp/ と言う。日本で使われる「蛇口」はアメリカ英語の faucet に当たる。">faucet?</span> That's great! I mean, that's great you called us, because we can be there and we can fix it <span class="w" data-w="right away." data-m="すぐに・今すぐ" data-n="right away = immediately（すぐに）。right now とほぼ同じ意味だが、right away は「今すぐ行動する」という動作のニュアンスが強い。">right away.</span> Okay.
+    </div>
+    <div class="cell ja">蛇口が水漏れ？ちょうどよかった！すぐに伺ってすぐに直します。はい。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-luigi">Luigi</span><br>Mario, we got one! The Super Mario Brothers are <span class="w" data-w="in business!" data-m="開業した！仕事が始まった！" data-n="be in business = 営業中・商売をしている。「We're in business!」は「さあ始まった！準備完了！」という喜びの表現としても使われる。">in business!</span></div>
+    <div class="cell ja">マリオ、仕事が来たぞ！スーパーマリオブラザーズ、開業だ！</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Oh, no. We're gonna be late.</div>
+    <div class="cell ja">あ、やばい。遅刻しちゃう。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">No, we're not. Come on, let's go.</div>
+    <div class="cell ja">大丈夫。ほら、行こう。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Hey, <span class="w" data-w="wait up!" data-m="待って！（追いつけるように止まってくれ）" data-n="wait up = 先に行かないで待ってくれ、という意味。単純な「wait」より「自分が追いつけるよう立ち止まっていてくれ」というニュアンスがある。">wait up!</span></div>
+    <div class="cell ja">ちょっと、待って！</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Come on, Lu. <span class="w" data-w="Step on it." data-m="急いで！" data-n="直訳は「それ（アクセル）を踏め」。車の運転で「アクセルを踏む＝スピードを出す」から転じて「急いで！」の口語表現になった。Hurry up! と同じ意味。">Step on it.</span></div>
+    <div class="cell ja">ルー、急いで。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">We have <span class="w" data-w="hit the big time." data-m="大成功した・一流になった" data-n="hit the big time = 大きな成功を収める・一流の舞台に立つ 慣用表現。hit にはここで「達成する・到達する」の意味がある。">hit the big time.</span></div>
+    <div class="cell ja">ついに大きなチャンスが来た。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">The drip is right upstairs <span class="w" data-w="at the end of the hall." data-m="廊下の突き当たりに" data-n="at the end of ～ = 〜の突き当たりに・〜の端に。hall = 廊下・ホール。「at the end of the street」（通りの突き当たりに）なども同パターン。">at the end of the hall.</span> Can you fix it?</div>
+    <div class="cell ja">水漏れは2階の廊下の突き当たりです。直せますか？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Very <span class="w" data-w="confident," data-m="自信を持って・もちろんです" data-n="発音：/ˈkɒnfɪdənt/。confident = 自信がある。ここでは「Very confident, sir」で「もちろんです、お任せください」というニュアンス。">confident,</span> sir.</div>
+    <div class="cell ja">もちろんです、大丈夫ですよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">You'll be careful about making a <span class="w" data-w="mess?" data-m="散らかった状態・汚れ" data-n="発音：/mɛs/。mess = 散らかった状態・混乱。make a mess = 散らかす・ちらかす。後の「We don't make messes. We fix 'em.」のダジャレにつながる重要な単語。">mess?</span></div>
+    <div class="cell ja">汚さないように気をつけてくれますか？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">
+      Ma'am, I <span class="w" data-w="assure" data-m="保証する・断言する" data-n="発音：/əˈʃʊər/。「assure you」で「あなたに保証する・確信を持って言う」の意味。I assure you = ご安心ください。フォーマルなビジネス表現でもよく使う。">assure</span> you, we don't make messes.<br>
+      We <span class="w" data-w="fix 'em." data-m="それらを直す（散らかりを直す）" data-n="'em = them の口語省略形。We fix them の短縮。ここで「散らかさない、散らかったものを直すのが仕事」という職人気質のセリフ。messes = 散らかった状態（複数形）">fix 'em.</span>
+    </div>
+    <div class="cell ja">大丈夫ですよ、奥さん。散らかしません。散らかったものを直すのが仕事ですから。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="w" data-w="Wrench." data-m="レンチ（工具）" data-n="発音：/rɛntʃ/。w＋rで始まる単語は w を発音しない（wrist, write, wrong も同様）。工具のレンチ・スパナのこと。">Wrench.</span></div>
+    <div class="cell ja">レンチ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">And a first job <span class="w" data-w="complete." data-m="完了・終了" data-n="「complete」を文末に置くことで「完了！」と宣言する表現。Mission complete.（任務完了）と同じ使い方。形容詞的に使われている。">complete.</span></div>
+    <div class="cell ja">初仕事完了。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Oh! It's the Super Mario Brothers, from the TV.</div>
+    <div class="cell ja">あら！テレビのスーパーマリオブラザーズじゃないの！</div>
+  </div>
+  <div class="row">
+    <div class="cell en">They give an <span class="w" data-w="Oscar" data-m="アカデミー賞（オスカー）" data-n="映画の最高賞アカデミー賞のトロフィーの愛称。「オスカーを贈る」= 最高の評価を与える、という皮肉な使い方。">Oscar</span> for worst actors?</div>
+    <div class="cell ja">最悪の演技にオスカーって出るの？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">What'd I do?</div>
+    <div class="cell ja">俺、何したの？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">So everybody saw the commercial, <span class="w" data-w="then?" data-m="（文末の）じゃあ・なんだ・やっぱり" data-n="文末の then は「ということは〜なんだね」「つまり〜ということか」という確認・推測のニュアンスを加える。So you've met before, then?（じゃあ以前会ったことがあるんだ？）">then?</span></div>
+    <div class="cell ja">じゃあみんなCM見たんだね？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="w" data-w="Uh-huh." data-m="うん・そうそう" data-n="発音：/ʌˈhʌ/。「うん」「そうです」を表す口語の相槌。Mm-hmm とも言う。Yes より砕けた表現。">Uh-huh.</span> We <span class="w" data-w="seen" data-m="見た（非標準文法）" data-n="標準英語では We saw it または We've seen it が正しい。「We seen it」は教育レベルが低い人物のセリフとして映画で使われる非標準表現。キャラクターの描写として意図的に使われている。">seen</span> it.</div>
+    <div class="cell ja">うん。見たよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">I <span class="w" data-w="wouldn't quit your day job." data-m="本業は辞めない方がいいよ（皮肉）" data-n="「Don't quit your day job」は「副業・趣味で食っていけると思うな」という皮肉な定型表現。相手の才能を（やんわり）否定する時に使う。">wouldn't quit your day job.</span></div>
+    <div class="cell ja">本業は辞めない方がいいよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="w" data-w="Oops!" data-m="あら！しまった！あれ？" data-n="発音：/uːps/。軽い失敗や気づきを表す間投詞。Oops! I dropped it.（あら、落としちゃった）のように使う。">Oops!</span> He already did.</div>
+    <div class="cell ja">あら！もう辞めちゃったけど。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Well, I thought it was <span class="w" data-w="incredible." data-m="信じられないほどすごい" data-n="発音：/ɪnˈkrɛdɪbl/。in（否定）+ credible（信じられる）= 信じられないほど。incredible はポジティブな驚き（すごい！）でよく使われる。形容詞で名詞を修飾するほかに、副詞形 incredibly（信じられないほど〜）も頻出。">incredible.</span></div>
+    <div class="cell ja">私はすごいと思ったけど。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">It <span class="w" data-w="belongs in" data-m="〜にふさわしい場所にある" data-n="belong in ～ = ～にあるべき・ふさわしい場所にある。belong to ～（〜に属する・〜のものだ）とは違う前置詞に注意。">belongs in</span> a movie theater.</div>
+    <div class="cell ja">映画館で上映すべきよ。</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン5 -->
+<div class="scene" id="scene5">
+<p class="scene-label">シーン 5 — 家族の食卓</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en">Everybody loves mushrooms, right?</div>
+    <div class="cell ja">みんなキノコが好きでしょ？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">I like mushrooms. I'll take it.</div>
+    <div class="cell ja">キノコ好き。いただきます。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">
+      Mario, seriously, <span class="w" data-w="what were you thinking" data-m="何を考えていたの？（呆れ・批判）" data-n="「What were you thinking?」は「いったい何を考えていたの？」という呆れ・批判の定型表現。過去形を使うことで「そんな判断をした過去の自分」を責めるニュアンスになる。">what were you thinking</span> with that commercial?
+    </div>
+    <div class="cell ja">マリオ、本当に、あのCMで何考えてたの？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">What? <span class="w" data-w="It's supposed to be funny." data-m="面白いはずなのに・面白くするつもりだったのに" data-n="be supposed to ～ = 〜することになっている・〜のはずだ。「I was supposed to call.」（電話するはずだったのに）のように予定・期待・義務を表す重要表現。">It's supposed to be funny.</span></div>
+    <div class="cell ja">え？面白いって思ったんだよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Can someone <span class="w" data-w="pass the bread?" data-m="パンを回してくれる？（食卓の表現）" data-n="食事中に「取ってくれる？」という時の定型表現。pass ＋ 食べ物 で「（食卓を渡して）取ってくれ」の意味。Can you pass the salt?（塩を取ってくれる？）も同パターン。">pass the bread?</span></div>
+    <div class="cell ja">誰かパン取ってくれる？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">
+      Yeah, but <span class="w" data-w="what's with the outfits?" data-m="その服装はどういうこと？" data-n="What's with ～? = 〜はどういうこと？〜はなんなの？と疑問・呆れを表す口語表現。What's with your hair?（その髪型どうしたの？）のように使う。">what's with the outfits?</span>
+      <span class="w" data-w="Plumbers" data-m="配管工" data-n="発音：/ˈplʌmərz/。plumb（鉛管）が語源で「配管工」。b は発音しない（サイレント b）。plumb /plʌm/（鉛直・鉛線）とは別語源だが関連がある。">Plumbers</span> wearing white gloves?
+    </div>
+    <div class="cell ja">でもあの服装、どういうこと？配管工が白い手袋？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">
+      That's right, you got to have a <span class="w" data-w="trademark." data-m="トレードマーク・特徴・ブランド" data-n="発音：/ˈtreɪdmɑːrk/。元は商標・登録マークの意味だが、口語では「その人らしい特徴」という意味でも使う。「ボブの帽子は彼のトレードマークだ」のように。">trademark.</span>
+      Got to <span class="w" data-w="stand out." data-m="目立つ・際立つ" data-n="stand out = 群衆の中で目立つ・際立つ 句動詞。She stands out in a crowd.（彼女は人混みでも目立つ）のように使う。out には「外に出る」の意味が含まれ、周囲より飛び出して見えるイメージ。">stand out.</span>
+    </div>
+    <div class="cell ja">そうだよ、トレードマークが必要なんだ。目立たないとね。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mom">Mom</span><br>
+      Don't listen to them. The world <span class="w" data-w="laughed at" data-m="〜を笑った・馬鹿にした" data-n="laugh at ～ = 〜を笑う・嘲笑する。at に注意。laugh with ～（一緒に笑う）とは異なり、laugh at は嘲笑のニュアンス。">laughed at</span> da Vinci, too.
+    </div>
+    <div class="cell ja">気にしないで。世界はダ・ヴィンチのことも笑ったのよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="w" data-w="Mm, I'm not sure they did, Ma." data-m="うーん、そうだったかな、ママ" data-n="「I'm not sure」= 確信が持てない・どうかな。they did は前文の laughed at da Vinci を受けた代動詞。Ma は Mom のさらにくだけた呼び方（マ）。">Mm, I'm not sure they did, Ma.</span></div>
+    <div class="cell ja">うーん、そうだったかな、ママ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Dad, what did you think?</div>
+    <div class="cell ja">パパは何て思った？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-dad">Dad</span><br>
+      I think you're <span class="w" data-w="nuts." data-m="頭がおかしい・狂っている（口語）" data-n="発音：/nʌts/。crazy と同じ意味の口語表現。You're nuts! = 正気じゃない！。nutcase（おかしな人）も同語源。">nuts.</span>
+      You don't leave a <span class="w" data-w="steady job" data-m="安定した仕事・定職" data-n="steady = 安定した・定期的な。steady job = 定職・安定した雇用。「a steady income」（安定した収入）なども同パターン。">steady job</span> for some crazy dream. And the worst part? You're <span class="w" data-w="bringing your brother down with you." data-m="弟まで道連れにしている" data-n="bring down ～ = 〜を落ち込ませる・失敗に巻き込む 句動詞。「with you」= あなたと一緒に。「自分が沈む時に弟も引きずり下ろしている」というニュアンス。">bringing your brother down with you.</span>
+    </div>
+    <div class="cell ja">頭がおかしいと思うよ。安定した仕事を辞めてバカな夢を追うなんて。最悪なのは弟まで道連れにしてることだ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Well, thanks, Dad. Thanks for your <span class="w" data-w="support." data-m="サポート・応援（ここは皮肉）" data-n="「Thanks for your support」は通常ポジティブな言葉だが、ここでは全否定された後に言うので強烈な皮肉になっている。文脈によって意味が真逆になる例。発音：/səˈpɔːrt/">support.</span></div>
+    <div class="cell ja">そうか、ありがとう、パパ。応援してくれて。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="w" data-w="What'd I say?" data-m="俺、何か言ったか？（とぼける）" data-n="What'd = What did の短縮。「自分は何も悪いことを言っていない」ととぼけるセリフ。批判や不満を言った後に使う白々しい表現。">What'd I say?</span></div>
+    <div class="cell ja">何か言ったか？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-luigi">Luigi</span><br>
+      Uh, you're not bringing me down. You know what? <span class="w" data-w="What do they know, huh?" data-m="あいつらに何がわかるって？" data-n="「What do they know?」= 彼らに何がわかるというの？という反語表現。「彼らは何も分かっていない」という強い意味。huh は語尾につけて「だろ？」「ね？」と同意を求めたり不満を表したりする。">What do they know, huh?</span>
+    </div>
+    <div class="cell ja">道連れになんてなってないよ。ねえ、あいつらに何がわかるって？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      It's not just them. Our whole lives, everyone's telling us we can't do this, we can't do that. I'm just <span class="w" data-w="sick and tired of" data-m="うんざりしている・もうたくさんだ" data-n="sick and tired of ～ = 〜にうんざりしている 慣用表現。sick だけでも「うんざり」の意味になるが、sick and tired と重ねることで強調される。I'm sick and tired of waiting.（待つのにもううんざりだ）">sick and tired of</span> <span class="w" data-w="feeling so small." data-m="こんなに惨めな思いをすること" data-n="feel small = 惨めに感じる・卑小に感じる。物理的な「小さい」ではなく、「みじめ・無力・取るに足らない」という感情を表す比喩表現。">feeling so small.</span>
+    </div>
+    <div class="cell ja">あいつらだけじゃない。ずっとみんなに「それはできない」って言われてきた。もう惨めな思いをするのはうんざりだ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      Luigi, this is our chance. <span class="w" data-w="Destiny is calling." data-m="運命が呼んでいる" data-n="calling には「電話している」と「呼びかけている」の2つの意味がある。「Destiny is calling」は「運命が呼びかけている」という詩的な表現で、次のシーンでルイージが「Destiny Del Vecchio（人名）？」と勘違いするギャグにつながる。">Destiny is calling.</span>
+    </div>
+    <div class="cell ja">ルイージ、これが僕たちのチャンスだ。運命が呼んでいる。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-luigi">Luigi</span><br>
+      <span class="w" data-w="Destiny Del Vecchio from high school?" data-m="高校のデスティニー・デルベッキオのこと？" data-n="Destiny（デスティニー）をマリオは「運命」の意味で使ったが、ルイージは女性の名前（Destiny Del Vecchio）として聞き間違えたボケ。英語の同音異義・ダジャレを使った典型的なコメディ表現。">Destiny Del Vecchio from high school?</span>
+    </div>
+    <div class="cell ja">高校のデスティニー・デルベッキオのこと？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">What? No. Just come on.</div>
+    <div class="cell ja">え？違うよ。ほら、来て。</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン6 -->
+<div class="scene" id="scene6">
+<p class="scene-label">シーン 6 — 地下へ</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en">They're not even looking in the right place. Come on, Lu.</div>
+    <div class="cell ja">全然見る場所が違う。行こうよ、ルー。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-luigi">Luigi</span><br>
+      You are not <span class="w" data-w="seriously considering..." data-m="本気で考えているんじゃないよね…" data-n="seriously = 本気で・真剣に。considering = 検討している（consider の現在分詞）。「You're not seriously considering...」= 「まさか本当に〜しようとしてるんじゃないよね？」という信じられない気持ちを表す。">seriously considering...</span>
+    </div>
+    <div class="cell ja">まさかそこに入ろうとしてるんじゃ...</div>
+  </div>
+  <div class="row">
+    <div class="cell en">We got to get to that <span class="w" data-w="pressure valve." data-m="圧力弁（配管の部品）" data-n="pressure /ˈprɛʃər/ = 圧力。valve /vælv/ = 弁（液体・気体の流れを制御する部品）。配管工らしい専門用語。">pressure valve.</span></div>
+    <div class="cell ja">あの圧力弁まで行かなきゃ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">I knew <span class="w" data-w="saving Brooklyn" data-m="ブルックリンを救うこと" data-n="saving はここで「救う」の動名詞形（save → saving）。money を saving（貯める）とは全く別の意味。ブルックリンの水道トラブルを修理しようとしていた文脈。">saving Brooklyn</span> was a bad idea.</div>
+    <div class="cell ja">ブルックリンを救うなんて悪い考えだと思ってたんだ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">What is this place?</div>
+    <div class="cell ja">ここはどこだ？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Looks like <span class="w" data-w="nobody's been down here for years." data-m="何年も誰もここに来ていないみたいだ" data-n="現在完了形（has been）。「for years」= 何年もの間。「nobody has been down here for years」の短縮形で、主語・動詞が省略されている口語表現。">nobody's been down here for years.</span></div>
+    <div class="cell ja">何年も誰も来てないみたいだ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Luigi, are you in there?</div>
+    <div class="cell ja">ルイージ、そこにいるか？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Give me your hand! <span class="w" data-w="It's all gonna be okay!" data-m="全部大丈夫だから！" data-n="「It's going to be okay / alright」の口語短縮形。危機的な状況で相手を安心させる定型表現。gonna = going to。all は「全部・すべて」を強調する副詞。">It's all gonna be okay!</span></div>
+    <div class="cell ja">手を貸して！大丈夫だから！</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="w" data-w="How is this gonna be okay?" data-m="どうして大丈夫なの？" data-n="How is ～ going to be okay? = どうやったら〜が大丈夫になるの？という疑問・反論表現。絶望的な状況で「大丈夫」と言われた時の自然な返し。">How is this gonna be okay?</span></div>
+    <div class="cell ja">どうして大丈夫なの？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">
+      I'm telling you, <span class="w" data-w="nothing can hurt us" data-m="何も僕たちを傷つけられない" data-n="nothing = 何も〜ない（否定の主語）。hurt = 傷つける（hurt-hurt-hurt と不規則変化なし）。「as long as we're together」= 一緒にいる限り、という条件節とセットで覚えたい表現。">nothing can hurt us</span> <span class="w" data-w="as long as we're together." data-m="一緒にいる限り" data-n="as long as ～ = 〜する限り・〜であれば 条件を表す接続詞表現。as long as you study, you'll pass（勉強する限り合格する）のように使う。">as long as we're together.</span>
+    </div>
+    <div class="cell ja">一緒にいる限り、何も僕たちを傷つけられないって言ってるだろ。</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン7 -->
+<div class="scene" id="scene7">
+<p class="scene-label">シーン 7 — キノコ王国・キノピオ登場</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en">
+      Do not touch that mushroom! <span class="w" data-w="You'll die!" data-m="死ぬぞ！" data-n="will の短縮形 'll。You will die! の強い警告。You're going to die! と同じ意味だが、will は即座の判断・強い確信を示す。">You'll die!</span> Oh, I'm sorry. That one's <span class="w" data-w="perfectly fine." data-m="全く問題ない・完全に大丈夫" data-n="perfectly = 完全に・全く（副詞）。fine = 大丈夫・問題ない。perfectly fine で「完全に問題なし」という強調表現。">perfectly fine.</span>
+    </div>
+    <div class="cell ja">そのキノコに触るな！死ぬぞ！あ、ごめん。それは全然大丈夫。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">That's a little <span class="w" data-w="mushroom man." data-m="キノコの人・キノピオ" data-n="mushroom /ˈmʌʃruːm/ = キノコ。sh の発音に注意（シュ）。man は「人間・男性」。繰り返す（a little mushroom man talking to me）ことで驚きが強調されている。">mushroom man.</span> A little mushroom man talking to me.</div>
+    <div class="cell ja">小さなキノコの人だ。小さなキノコの人が話しかけてくる。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      <span class="w" data-w="Pleased to meet you." data-m="はじめまして。（丁寧）" data-n="発音：/pliːzd/。Nice to meet you. より少しフォーマルな自己紹介表現。「お会いできて光栄です」のニュアンス。ビジネスシーンでもよく使われる。">Pleased to meet you.</span> I'm Toad.
+    </div>
+    <div class="cell ja">はじめまして。キノピオです。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>Uh, Mario.</div>
+    <div class="cell ja">えっと、マリオです。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">So this is, uh... this is not a dream?</div>
+    <div class="cell ja">つまり、これは...夢じゃないの？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="w" data-w="That hurt, right?" data-m="痛かったでしょ？（つまり夢じゃない）" data-n="hurt は現在形・過去形・過去分詞すべて hurt（変化なし）。「夢なら痛くないはず」というロジックで夢でないことを証明する場面。right? は「でしょ？そうでしょ？」と確認を求める付加表現。">That hurt, right?</span></div>
+    <div class="cell ja">痛かったでしょ？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Yes! Definitely not a dream. Then it's... this place is...</div>
+    <div class="cell ja">はい！絶対に夢じゃない。じゃあ...ここは...</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>The Mushroom Kingdom!</div>
+    <div class="cell ja">キノコ王国！</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Mushrooms? Really?</div>
+    <div class="cell ja">キノコ？本当に？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Now, that is a <span class="w" data-w="cruel twist of fate." data-m="運命の残酷ないたずら" data-n="twist = ひねり・予想外の展開。twist of fate = 運命のいたずら・皮肉な巡り合わせ。cruel /kruːəl/ = 残酷な（発音注意：クルーエル）。マリオはキノコが嫌いなのにキノコ王国に来てしまった皮肉を言っている。">cruel twist of fate.</span></div>
+    <div class="cell ja">これは残酷な運命のいたずらだ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      Yeah, I'm actually looking for somebody. Uh, my brother, <span class="w" data-w="in fact." data-m="実は・というか実際のところ" data-n="in fact = 実際には・事実として。会話の途中で「実は〜なんだ」と補足・訂正・強調する時に使うフレーズ。">in fact.</span> He looks <span class="w" data-w="exactly like me" data-m="見た目が僕とそっくり" data-n="exactly = 全く・ちょうど・正確に。「look exactly like ～」= ～とそっくりに見える。looksは「外見・見た目」の意味でも使う（She looks happy = 彼女は幸せそうに見える）。">exactly like me</span> but tall and <span class="w" data-w="skinny" data-m="痩せた・ガリガリの" data-n="発音：/ˈskɪni/。thin（痩せた）より口語的で「ガリガリに痩せている」のニュアンスが強い。">skinny</span> and green. See, last time I saw him, he was <span class="w" data-w="falling through a pipe." data-m="パイプを通って落ちていった" data-n="fall through ～ = 〜を通って落ちる。through /θruː/ = 〜を通り抜けて（発音注意：スルー）。過去進行形（was falling）で「落ちていくところだった」という場面描写。">falling through a pipe.</span> It was foggy, and I believe there was <span class="w" data-w="lava." data-m="溶岩" data-n="発音：/ˈlɑːvə/。イタリア語起源の言葉。ゲームのマリオでもおなじみ。">lava.</span>
+    </div>
+    <div class="cell ja">実は人を探してるんだ。弟なんだけど。見た目は僕とそっくりだけど背が高くて痩せていて緑色。パイプの中に落ちていったんだ。霧がかかっていて...溶岩もあったと思う。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>Uh, that is not good.</div>
+    <div class="cell ja">えっと、それはまずい。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      Um, your brother has <span class="w" data-w="landed in the Dark Lands." data-m="闇の国に着地した・落ちた" data-n="land = 着地する・到着する（動詞）。The plane landed.（飛行機が着陸した）と同じ用法。「Dark Lands」= 闇の国・魔王の支配地域。">landed in the Dark Lands.</span>
+      They're under <span class="w" data-w="Bowser's control." data-m="クッパの支配下にある" data-n="under ～'s control = 〜の支配・管理下にある。under control = 制御されている（問題なし）とは違い、under someone's control = その人に支配されている。">Bowser's control.</span>
+      He's the most <span class="w" data-w="evil, wretched" data-m="邪悪で、みじめな・最低な" data-n="evil /ˈiːvl/ = 邪悪な。wretched /ˈrɛtʃɪd/ = みじめな・最低な（発音注意：-edで終わるが/ɪd/と発音）。2語を並べることでクッパの最悪さを強調している。">evil, wretched</span> creature alive.
+    </div>
+    <div class="cell ja">えっと、弟さんは闇の国に落ちたんだ。そこはクッパの支配下にあって。あいつは生きてる中で一番邪悪で最低な生き物なんだ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      I'm taking you to see the princess. She can help you. <span class="w" data-w="She can do anything." data-m="彼女は何でもできる" data-n="can = 能力・可能性を表す助動詞。anything = 何でも（疑問文・否定文以外でも「何でも」の意味で使える）。She can do anything. は強い信頼・称賛を表す表現。">She can do anything.</span>
+    </div>
+    <div class="cell ja">お姫様に会いに連れて行くよ。彼女なら助けてくれる。何でもできるから。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Princess?</div>
+    <div class="cell ja">お姫様？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      Come on, Mario! Our big <span class="w" data-w="adventure begins now!" data-m="冒険が今始まる！" data-n="adventure /ədˈvɛntʃər/ = 冒険・アドベンチャー。begins now = 今始まる（現在形で「今この瞬間」を強調）。">adventure begins now!</span>
+    </div>
+    <div class="cell ja">行こう、マリオ！大冒険の始まりだ！</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Hang on, Luigi.</div>
+    <div class="cell ja">待ってろ、ルイージ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">You just got <span class="w" data-w="a-Luigi'd." data-m="ルイージの洗礼を受けたね" data-n="Luigi を動詞化した造語ギャグ。キノピオがブロックに当たって通路を塞いでしまったことを「ルイージされた（Luigi'd）」と表現。映画独自のユーモラスな造語で、英語では名詞・固有名詞を動詞化することがある（例：Google it / Photoshop it）。">a-Luigi'd.</span></div>
+    <div class="cell ja">ルイージの洗礼だよ。</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン8 -->
+<div class="scene" id="scene8">
+<p class="scene-label">シーン 8 — 宮殿へ</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>This way, Mario. The princess lives right on that hill.</div>
+    <div class="cell ja">こっちだよ、マリオ。お姫様はあの丘に住んでるんだ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      Excuse me, everybody. <span class="w" data-w="Coming through." data-m="通ります・道を開けてください" data-n="「Coming through!」は人混みを通り抜けるときの定番表現。「Excuse me」より緊急感がある。">Coming through.</span>
+      This guy's brother is going to die <span class="w" data-w="imminently!" data-m="今にも・差し迫って" data-n="発音：/ˈɪmɪnəntli/。imminent = 差し迫った・今にも起こりそうな。imminent danger（差し迫った危険）のように使う。副詞形が imminently。">imminently!</span>
+      Out of the way, please! Just trying to <span class="w" data-w="clear a path." data-m="道を開ける" data-n="clear = （邪魔なものを）取り除く・開ける。clear a path = 道を作る。clear the table（食卓を片付ける）/ clear the air（空気を一新する）なども同じ用法。">clear a path.</span> That's all I'm doing.
+    </div>
+    <div class="cell ja">すみません、みなさん。通ります。この人の弟が今にも死にそうなんです！どいてください！道を開けようとしてるだけです。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">He's <span class="w" data-w="gonna be fine." data-m="大丈夫だよ・なんともないよ" data-n="be fine = 大丈夫な状態にある。gonna = going to。「He's going to be fine.」の口語短縮形。心配している人を安心させる定型表現。">gonna be fine.</span></div>
+    <div class="cell ja">大丈夫だよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Does this thing work?</div>
+    <div class="cell ja">これ動くの？</div>
+  </div>
+  <div class="row">
+    <div class="cell en">And <span class="w" data-w="up we go." data-m="さあ上に行くよ・いざ出発" data-n="「up we go」は移動（特に上方向）を始める時のかけ声。Here we go!（さあ行くぞ！）の仲間。主語と動詞が倒置されているのが特徴。">up we go.</span></div>
+    <div class="cell ja">さあ、上に行くよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">
+      Whoa. Okay, so these bricks are just <span class="w" data-w="floating here?" data-m="ここに浮かんでるの？" data-n="float = 浮く・漂う。floating = 浮いている（現在分詞）。ゲームのマリオでおなじみの「空中に浮いたブロック」に初めて驚く場面。">floating here?</span> Uh...
+    </div>
+    <div class="cell ja">わあ。えっと、このブロックはただ浮いてるの？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      Just <span class="w" data-w="pop in this pipe," data-m="このパイプにぽんと入れば" data-n="pop = 素早く・ひょいと（動詞）。pop in = さっと入る・ちょっと立ち寄る。Pop in the store.（ちょっとお店に入る）のように使う。気軽な動きのニュアンス。">pop in this pipe,</span> and we're on our way. <span class="w" data-w="It's the only way to fly, man." data-m="これが最高の移動手段だよ" data-n="「the only way to fly」は直訳「飛ぶ唯一の方法」だが「最高の方法・これしかない」という意味の口語表現。man は友達への呼びかけ（なあ、お前）。">It's the only way to fly, man.</span>
+    </div>
+    <div class="cell ja">このパイプに入れば出発だよ。これが最高の移動手段だよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Oh, wow. Love these pi... <span class="w" data-w="(yells)" data-m="（叫び声）" data-n="台本の舞台指示（ト書き）で、実際の言葉ではなく動作・感情を表す。スクリーンプレイでは (laughs) (sighs) (whispers) のように括弧で動作を示す。">(yells)</span></div>
+    <div class="cell ja">わあ、すごい。このパイ...（叫び声）</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>Here we are. <span class="w" data-w="Palace doors." data-m="宮殿の扉" data-n="palace /ˈpæləs/ = 宮殿・御所。「Here we are」= 着いたよ・ここだよ の定型表現。「Here you are」（はいどうぞ）とは違い、目的地に到着した時に使う。">Palace doors.</span></div>
+    <div class="cell ja">着いたよ。宮殿の扉だ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-guard">Guard</span><br>
+      <span class="w" data-w="Hold it right there," data-m="そこで止まれ・動くな" data-n="「Hold it!」= 止まれ！待て！という命令表現。right there = まさにそこで（強調）。警備員や警察が使う定型の制止表現。">Hold it right there,</span> you two.
+    </div>
+    <div class="cell ja">そこで止まれ、二人とも。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      Oh, hey. I need to see the princess. It's an <span class="w" data-w="emergency." data-m="緊急事態" data-n="発音：/ɪˈmɜːrdʒənsi/。emerge（現れる・緊急に出てくる）+ -ency。「It's an emergency!」は緊急事態を知らせる定型表現。emergency exit（非常口）/ emergency room（救急室）など。">emergency.</span>
+    </div>
+    <div class="cell ja">やあ。お姫様に会わせてほしいんです。緊急事態なんです。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-guard">Guard</span><br>
+      What princess? I never heard of any princess. Oh, wait, I did. Our princess, though, <span class="w" data-w="is in another castle." data-m="別のお城にいるんだ" data-n="スーパーマリオブラザーズ（ファミコン）の名言「But our princess is in another castle」のオマージュ！元ネタを知っているとニヤリとするメタジョーク。">is in another castle.</span>
+    </div>
+    <div class="cell ja">何のお姫様？聞いたことないな。あ、待った、聞いたことある。でも僕たちのお姫様は別のお城にいるんだ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Oh, yeah. That's right. You should try another castle, maybe. <span class="w" data-w="She ain't in this one." data-m="ここにはいないよ" data-n="ain't = am not / is not / are not / has not / have not の口語・非標準形。教育水準が低い・くだけたキャラクターのセリフとして使われる。標準英語では She isn't in this one.">She ain't in this one.</span></div>
+    <div class="cell ja">あ、そうそう。別のお城を試してみたら？ここにはいないよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      Okay, so they're <span class="w" data-w="messing with you," data-m="あなたをからかっている" data-n="mess with ～ = 〜をからかう・いじめる・邪魔する 口語表現。Don't mess with me.（俺をなめるな）のように警告にも使う。">messing with you,</span> and I don't like it.
+    </div>
+    <div class="cell ja">わかった、あいつら君をからかってる。気に入らないな。</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン9 -->
+<div class="scene" id="scene9">
+<p class="scene-label">シーン 9 — クッパの脅威、評議会</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-council">Council</span><br>
+      <span class="w" data-w="Council," data-m="評議会・議会" data-n="発音：/ˈkaʊnsl/。council（評議会）と counsel（助言）は発音が同じだが意味が全く違うので注意。">Council,</span> your attention.
+      Bowser has found the <span class="w" data-w="Super Star" data-m="スーパースター（無敵アイテム）" data-n="マリオゲームの「スター」アイテム。取ると一定時間無敵になる。映画でも同じ設定で使われている。">Super Star</span> and is headed toward our kingdom.
+      Its power will make him <span class="w" data-w="invincible." data-m="無敵の・誰にも負けない" data-n="発音：/ɪnˈvɪnsɪbl/。in（否定）+ vincible（征服できる）= 征服不可能・無敵。invincible army（無敵の軍隊）、The Invincibles（映画タイトルにも）。">invincible.</span>
+      We will be <span class="w" data-w="destroyed." data-m="滅ぼされる・破壊される" data-n="destroy /dɪˈstrɔɪ/ の受動態過去分詞。be destroyed = 滅ぼされる（受け身）。We will destroy = 私たちが滅ぼす、We will be destroyed = 私たちが滅ぼされる、の違いに注意。">destroyed.</span>
+    </div>
+    <div class="cell ja">クッパがスーパースターを見つけて、我が王国に向かっています。その力で彼は無敵になります。私たちは滅ぼされてしまいます。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">Princess, what are we gonna do?</div>
+    <div class="cell ja">お姫様、どうすればいいんですか？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Princess</span><br>
+      I will not <span class="w" data-w="let him hurt you." data-m="あいつに皆さんを傷つけさせません" data-n="let ＋ 人 ＋ 動詞の原形 = 〜に…させる（使役動詞）。I will not let him = 彼にそうさせない。使役動詞 let / make / have / get の用法は英語の重要文法。">let him hurt you.</span>
+      We are going to <span class="w" data-w="stop Bowser." data-m="クッパを止める" data-n="stop ＋ 人 = 〜を止める。stop ＋ 動名詞（stop doing）= 〜するのをやめる、と区別が必要。ここは「クッパという人物を止める」の意味。">stop Bowser.</span>
+    </div>
+    <div class="cell ja">あいつに皆さんを傷つけさせません。クッパを止めます。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">
+      How? Look at us. <span class="w" data-w="We're adorable." data-m="私たちは可愛いだけ（力がない）" data-n="adorable /əˈdɔːrəbl/ = とても可愛い・愛らしい。通常は褒め言葉だが、ここでは「可愛いだけで戦力にならない」という自虐表現として使われている。">We're adorable.</span>
+    </div>
+    <div class="cell ja">どうやって？見てくださいよ、私たち。可愛いだけですよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Princess</span><br>
+      I'm going to <span class="w" data-w="convince" data-m="説得する・納得させる" data-n="発音：/kənˈvɪns/。convince ＋ 人 ＋ to ＋ 動詞 = 〜に…するよう説得する。I convinced him to stay.（私は彼に残るよう説得した）のように使う。">convince</span> the great Kong army to help us. Together, we'll <span class="w" data-w="annihilate" data-m="全滅させる・完全に壊滅させる" data-n="発音：/əˈnaɪəleɪt/（アナイアレイト）非常に発音が難しい語。ani- の部分が/ənai/になることに注意。nihil（ラテン語で「無」）が語源で「完全に無にする」の意味。">annihilate</span> that monster.
+    </div>
+    <div class="cell ja">偉大なるコング軍に協力してもらうよう説得します。一緒に、あの怪物を倒します。</div>
+  </div>
+  <div class="row">
+    <div class="cell en">
+      Their <span class="w" data-w="mad king" data-m="狂った王・無法な王" data-n="mad = 狂っている・激怒している（イギリス英語では「怒っている」の意味で使われる）。アメリカ英語では主に「怒った」より「正気でない・クレイジー」の意味。">mad king</span> doesn't make <span class="w" data-w="alliances." data-m="同盟・連合" data-n="発音：/əˈlaɪəns/。ally（同盟国・味方）の名詞形。make an alliance = 同盟を結ぶ。NATO（北大西洋条約機構）もアライアンス（alliance）の一種。">alliances.</span>
+      The Kongs will never agree.
+    </div>
+    <div class="cell ja">あそこの狂った王は同盟を結ばないですよ。コングたちは絶対に同意しません。</div>
+  </div>
+</div>
+</div>
+
+
+<!-- シーン10 -->
+<div class="scene" id="scene10">
+<p class="scene-label">シーン 10 — ピーチとマリオ出会い</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      I can <span class="w" data-w="convince" data-m="説得する" data-n="発音：/kənˈvɪns/。convince + 人 + to不定詞 で『人を説得して～させる』。例：I convinced him to come.（彼を来るよう説得した）">convince</span> him.
+    </div>
+    <div class="cell ja">私が説得できます。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      I'll <span class="w" data-w="leave for" data-m="～へ向けて出発する" data-n="leave for + 場所 = その場所へ向けて出発する。例：I'll leave for Tokyo tomorrow.（明日東京へ出発する）。leave 単独は『去る』で行き先を示さない。">leave for</span> the Jungle Kingdom <span class="w" data-w="in the morning" data-m="朝に・朝のうちに" data-n="in the morning = 朝に（習慣的）。特定の日の朝は on the morning of ～ または tomorrow morning と言う。">in the morning</span>.
+    </div>
+    <div class="cell ja">朝にジャングル王国へ出発します。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-council">Council</span><br>
+      Good luck, Princess, <span class="w" data-w="for all our sakes" data-m="私たち全員のために" data-n="for ～'s sake = ～のために。for all our sakes は『私たち全員の利益のために』。複数形の sakes が使われることに注意。">for all our sakes</span>.
+    </div>
+    <div class="cell ja">頑張ってください、お姫様。私たち全員のために。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      Wait. <span class="w" data-w="Release him." data-m="彼を解放しなさい。" data-n="Release は『解放する・釈放する』の命令形。他にも『発売する』の意味もある（例：They released a new movie.）。発音：/rɪˈliːs/">Release him.</span>
+    </div>
+    <div class="cell ja">待って。彼を解放して。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      He's a human!<br>
+      <span class="w" data-w="I mean," data-m="つまり・というか" data-n="I mean は話し言葉で非常によく使われる。言い直し・補足・強調のつなぎ言葉。例：I mean, it was amazing!（つまり、本当にすごかったよ！）">I mean,</span> you are a human, right?
+    </div>
+    <div class="cell ja">人間じゃない！<br>というか、あなた人間ですよね？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      It's just, you're <span class="w" data-w="so small" data-m="とても小さい" data-n="so + 形容詞 = とても～（強調）。so は very より感情的・口語的なニュアンスが強い。">so small</span> and...
+    </div>
+    <div class="cell ja">ただ、あなってとても小さくて…</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      Hey. Wait, wait, wait. Let-let's go back.<br>
+      <span class="w" data-w="Where did you come from?" data-m="どこから来たの？" data-n="疑問詞 + 助動詞 + 主語 + 動詞 の語順（直接疑問文）。Where did you come from? の from を文末に置くのが自然な英語。">Where did you come from?</span>
+    </div>
+    <div class="cell ja">ちょっと待って。話を戻して。どこから来たの？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      Uh, me and my little brother Luigi, we-we <span class="w" data-w="fell down this pipe" data-m="このパイプから落ちてきた" data-n="fell は fall（落ちる）の過去形。fell down ～ = ～から転げ落ちた。down は方向を強調する副詞。">fell down this pipe</span>.<br>
+      And now he's <span class="w" data-w="lost somewhere" data-m="どこかで迷子になっている" data-n="lost = 迷子の・行方不明の（形容詞）。somewhere = どこかに（場所を特定しない副詞）。">lost somewhere</span> in the Dark Lands.
+    </div>
+    <div class="cell ja">えっと、僕と弟のルイージがこのパイプから落ちてきて。今、暗黒の地のどこかで迷子になってる。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      Then it's only <span class="w" data-w="a matter of time" data-m="時間の問題" data-n="it's only a matter of time (until ～) = （～まで）時間の問題に過ぎない。matter は『問題・事柄』の意味。">a matter of time</span> until he's captured by Bowser.<br>
+      But you're <span class="w" data-w="in luck." data-m="運がいいですよ。" data-n="in luck = 運がいい（形容詞句）。反対は out of luck（運が悪い）。You're in luck! は『ラッキーですね！』という決まり文句。">in luck.</span><br>
+      I'm <span class="w" data-w="on my way to" data-m="～へ向かっているところ" data-n="on one's way to ～ = ～へ向かっている途中。I'm on my way! は『今向かってます！』という頻出フレーズ。">on my way to</span> stop him.
+    </div>
+    <div class="cell ja">それならクッパに捕まるのは時間の問題ね。でもラッキーよ。今ちょうど彼を止めに行くところなの。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      Well, <span class="w" data-w="take me with you" data-m="一緒に連れて行って" data-n="take + 人 + with + 人 = ～を連れて行く。Take me with you. は懇願・命令のニュアンス。">take me with you</span>.
+    </div>
+    <div class="cell ja">じゃあ、僕も連れて行って。</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン11 -->
+<div class="scene" id="scene11">
+<p class="scene-label">シーン 11 — マリオに同行を迫る</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      This guy's a <span class="w" data-w="lunatic" data-m="狂人・無謀な人" data-n="発音：/ˈluːnətɪk/。もともと『月（luna）の影響で狂う』という迷信から来た語。現代では『危険なほどおかしな人』の口語表現。">lunatic</span>, a <span class="w" data-w="psycho" data-m="精神異常者・ヤバイやつ（口語）" data-n="発音：/ˈsaɪkoʊ/。psychopath（精神病質者）の略。口語で『頭がおかしい危険な人』を指す。使いすぎると失礼な言葉。">psycho</span>.
+    </div>
+    <div class="cell ja">あいつは狂人よ、やばいやつ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      He will <span class="w" data-w="eat you for breakfast" data-m="朝飯前にあなたをやっつける（イディオム）" data-n="eat someone for breakfast はイディオム。『朝食のようにあっさりやっつける・勝てるわけがない』という意味。例：That team will eat us for breakfast.（あのチームには勝てっこない）">eat you for breakfast</span>.
+    </div>
+    <div class="cell ja">あなたなんか朝飯前にやっつけるわよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      He won't even <span class="w" data-w="notice it" data-m="それに気づかない・気にも留めない" data-n="notice = 気づく・気にする。won't even notice = 『まったく気にもしない』という強調。even（～さえも）が否定文で使われると強調になる。">notice it</span>, probably, 'cause you're very, very small.
+    </div>
+    <div class="cell ja">多分、気にもしないわよ。だってあなたとっても小さいんだもの。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      You know what? <span class="w" data-w="Make fun of me" data-m="私を馬鹿にする" data-n="make fun of ～ = ～を馬鹿にする・からかう。Don't make fun of others.（人をからかうな）">Make fun of me</span> <span class="w" data-w="all you want," data-m="思う存分・好きなだけ" data-n="all you want = as much as you want（好きなだけ）。逆説的な許可を与えるニュアンス。">all you want,</span><br>
+      but you are <span class="w" data-w="gonna" data-m="～するつもり・するはず（going to の口語）" data-n="gonna = going to の短縮形（口語）。発音：/ˈɡɒnə/。書き言葉では使わない。gonna の後は動詞の原形が来る。">gonna</span> help me find my brother.
+    </div>
+    <div class="cell ja">好きなだけ馬鹿にしていい。でも弟を探す手助けをしてもらうから。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      <span class="w" data-w="Let's see what you're made of." data-m="どんな実力があるか見せてもらいましょう。" data-n="what one is made of = 本当の実力・本質・根性。『あなたがどういう人間（実力）かを見てみよう』という挑戦的な表現。">Let's see what you're made of.</span>
+    </div>
+    <div class="cell ja">実力を見せてもらいましょう。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>Is that a yes?</div>
+    <div class="cell ja">それってOKってこと？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>No, that's a 'let's see what you're made of.'</div>
+    <div class="cell ja">いいえ、それは『実力を見せてもらいましょう』よ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      If you can finish this, you're coming with me.<br>
+      <span class="w" data-w="Watch and learn." data-m="見て学びなさい。" data-n="Watch and learn. は『見て学べ』という決まり文句。何かを実演するときに言う。命令文を and でつなぐと『～して、そして～しなさい』という意味になる。">Watch and learn.</span>
+    </div>
+    <div class="cell ja">これを完走できたら一緒に来ていいわ。見て学んで。</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン12 -->
+<div class="scene" id="scene12">
+<p class="scene-label">シーン 12 — トレーニングコース・パワーアップ</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      That was amazing. Wait. <span class="w" data-w="How am I supposed to do that?" data-m="どうやってそれをやるの？" data-n="be supposed to ～ = ～するはずである・～することになっている。How am I supposed to...? は『どうやって私が～できるというの？』という困惑・無理感を表す口語表現。">How am I supposed to do that?</span>
+    </div>
+    <div class="cell ja">すごい！でも、どうやってそれをやるの？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      With the <span class="w" data-w="Power-Ups" data-m="パワーアップアイテム" data-n="power-up は名詞・動詞両方で使える。ゲームの文脈では『能力を上げるアイテム』。power up（動詞）は『強化する』の意味。">Power-Ups</span>. They give us special <span class="w" data-w="abilities" data-m="能力・技術" data-n="発音：/əˈbɪlɪtɪz/（複数形）。ability の複数形。skill（技術）、talent（才能）、capability（潜在能力）と類似。">abilities</span>.
+    </div>
+    <div class="cell ja">パワーアップアイテムを使うの。特別な能力を与えてくれるのよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>Ugh. Really?</div>
+    <div class="cell ja">はあ、本当に？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      <span class="w" data-w="Go on." data-m="さあどうぞ・続けて" data-n="Go on. には『続けて』と『さあやってみて（促す）』の2つの意味がある。ここでは後者。同様の表現：Come on.（さあ）、Go ahead.（どうぞ）">Go on.</span> Eat it.
+    </div>
+    <div class="cell ja">さあ、食べて。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      Now, this has to be a mushroom?<br>
+      'Cause I just <span class="w" data-w="hate mushrooms" data-m="キノコが大嫌い" data-n="hate + 名詞/動名詞 = ～が大嫌い。just hate はさらに強調するための just。I just hate it. = もう本当に嫌い。">hate mushrooms</span> and...<br>
+      Are you sure there's not, like, a...
+    </div>
+    <div class="cell ja">これってキノコじゃないといけないの？だって本当にキノコが嫌いで…他に何かないの？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      <span class="w" data-w="Down the hatch." data-m="ぐいっと飲み込め！" data-n="down the hatch はイディオム。hatch は『船の昇降口・ハッチ』で、飲食物が喉を通るイメージ。乾杯や食べ物を勧めるときに使う。発音：/daʊn ðə hætʃ/">Down the hatch.</span>
+    </div>
+    <div class="cell ja">さっさと飲み込んで。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>(groans) Ow.</div>
+    <div class="cell ja">（うめき声）いたっ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      Yep, <span class="w" data-w="there it is" data-m="ほらそれだ・きた！" data-n="there it is = 予想していたものが現れたときに使う決まり文句。There you go.（ほらね）と同じ感覚。">there it is</span>, and all gone.
+    </div>
+    <div class="cell ja">ほらきた、全部消えた。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      Oh, <span class="w" data-w="not cool." data-m="ひどい・ありえない（口語）" data-n="not cool は口語で『ひどい・受け入れられない』を意味する。Cool（かっこいい）の反対。例：That's not cool, man.（それはないだろ）">not cool.</span><br>
+      I'm tall. And strong.
+    </div>
+    <div class="cell ja">ひどい。大きくなった。強くなった。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>And you can jump.</div>
+    <div class="cell ja">それにジャンプもできるわ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      (chuckles) Oh, <span class="w" data-w="I got this." data-m="これはいける・任せろ！（口語）" data-n="I got this. = I can handle this.（これは私が対応できる）の口語形。自信があるときに使う。過去形 got を使っているが意味は現在・未来。">I got this.</span> No problem.<br>
+      (yells) Oh, yeah.
+    </div>
+    <div class="cell ja">（笑い）よっしゃ、これならいける。問題ない。（叫び）よっしゃー！</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      <span class="w" data-w="When you get hit," data-m="やられたとき・当たったとき" data-n="get hit = 打撃を受ける・やられる。get + 過去分詞 は『受け身の動作』を表す口語的表現。例：get hurt（怪我する）、get paid（給料をもらう）">When you get hit,</span> you lose the power.<br>
+      Come on. Try again.
+    </div>
+    <div class="cell ja">やられたときはパワーが消えるの。さあ、もう一度。</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン13 -->
+<div class="scene" id="scene13">
+<p class="scene-label">シーン 13 — 励ましの会話</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      Well, we have a <span class="w" data-w="long journey ahead of us" data-m="長い旅が前に待っている" data-n="ahead of us = 私たちの前に・これからの。long journey ahead = まだまだ先は長いというニュアンスでも使われる。">long journey ahead of us</span>, Mustache.
+    </div>
+    <div class="cell ja">まあ、まだ長い旅が待っているわ、ヒゲ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>But I <span class="w" data-w="didn't make it." data-m="できなかった・成功しなかった" data-n="make it = 成功する・やり遂げる・間に合う。didn't make it = 成功できなかった。He made it! = やった！成功した！">didn't make it.</span></div>
+    <div class="cell ja">でも、できなかったよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      You <span class="w" data-w="almost did." data-m="ほぼできていた・あと少しだった" data-n="almost = ほとんど・もう少しで。almost did は did = made it の省略。You almost made it. と同じ意味。almost は日本語の『ほぼ』より達成直前のニュアンスが強い。">almost did.</span><br>
+      <span class="w" data-w="No one gets it right away." data-m="最初からできる人はいない。" data-n="no one = nobody（誰も～ない）。get it right away = すぐにできる・すぐに理解する。right away = すぐに・即座に。">No one gets it right away.</span>
+    </div>
+    <div class="cell ja">あと少しだったわ。最初からできる人なんていないの。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      <span class="w" data-w="How many tries did it take you?" data-m="何回かかったの？" data-n="How many + 名詞 + did it take? = 何回/どれくらいかかったか？。try（挑戦）の複数形は tries。">How many tries did it take you?</span>
+    </div>
+    <div class="cell ja">何回かかったの？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      Oh, so many. I was not good at it. <span class="w" data-w="Worse than you." data-m="あなたよりひどかった。" data-n="worse は bad の比較級。Worse than you = あなたよりも下手・もっとひどかった。bad → worse → worst（最上級）という変化。">Worse than you.</span>
+    </div>
+    <div class="cell ja">もう、何十回も。全然うまくなかったわ。あなたよりもひどかった。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      <span class="w" data-w="You got it right away, didn't you?" data-m="すぐにできたんでしょ？" data-n="付加疑問文：肯定文の後に didn't you? をつけて確認・念押しをする。got it right away = すぐにできた（get it の過去形）。">You got it right away, didn't you?</span>
+    </div>
+    <div class="cell ja">すぐにできたんでしょ？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      I got it right away, but I <span class="w" data-w="grew up here." data-m="ここで育った" data-n="grew up は grow up（育つ・成長する）の過去形。I grew up in Tokyo = 東京で育った。here（ここ）は彼女にとって慣れ親しんだ場所。">grew up here.</span>
+    </div>
+    <div class="cell ja">すぐにできたわ。でもここで育ったから。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      Okay, now you're just <span class="w" data-w="trying to make me feel better." data-m="私を元気づけようとしている" data-n="make someone feel better = 人を元気にさせる。try to ～ = ～しようとする。just は『単に・ただ』という意味で、ここでは『あなたはただ私を励まそうとしているだけでしょ』のニュアンス。">trying to make me feel better.</span>
+    </div>
+    <div class="cell ja">もう、ただ僕を元気づけようとしてるだけでしょ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>No. No.</div>
+    <div class="cell ja">違う。違うわ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      <span class="w" data-w="Is it working?" data-m="効いてる？元気出た？" data-n="Is it working? = 効果がある？うまくいってる？。work には『（薬・作戦・励ましが）効く・機能する』という意味がある。例：Did the medicine work?（薬は効いた？）">Is it working?</span>
+    </div>
+    <div class="cell ja">効いてる？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>A little bit. Yeah.</div>
+    <div class="cell ja">ちょっとね。うん。</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン14 -->
+<div class="scene" id="scene14">
+<p class="scene-label">シーン 14 — クッパの野望</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      My army! <span class="w" data-w="Koopas. Goombas. Whatever those things are." data-m="クッパ族。クリボー。あいつらはなんだっけ。" data-n="whatever those things are = あいつらが何であれ。whatever は『何であっても』を表す語。自分の兵士の名前も覚えていないユーモア。">Koopas. Goombas. Whatever those things are.</span>
+    </div>
+    <div class="cell ja">我が軍よ！クッパ族！クリボー！あいつらはなんだっけ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      <span class="w" data-w="After years of searching" data-m="長年の探索の末" data-n="after years of ～ing = 長年～した後。years of は『何年もの』という意味。after + 動名詞句 で『～の後』を表す。">After years of searching</span> for the Super Star, it is <span class="w" data-w="finally ours!" data-m="ついに我々のものだ！" data-n="ours は所有代名詞（our の独立形）。It is ours. = それは私たちのもの。finally（ついに）と組み合わせて長年の夢がかなった瞬間を表す。">finally ours!</span>
+    </div>
+    <div class="cell ja">長年のスーパースター探索の末、ついに我々のものになった！</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      I am now <span class="w" data-w="the most powerful turtle in the world!" data-m="世界で最も強いカメ！" data-n="最上級：the most + 形容詞 + 名詞 + in the world。2音節以上の形容詞には most をつける（powerful → most powerful）。in the world で最上級をさらに強調する。">the most powerful turtle in the world!</span>
+    </div>
+    <div class="cell ja">私は今や世界最強のカメだ！</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      Soon, we will arrive at the Mushroom Kingdom.<br>
+      Where, <span class="w" data-w="after years of being sworn enemies," data-m="長年の宿敵関係の末" data-n="sworn enemies = 不倶戴天の敵・宿敵。sworn は swear（誓う）の過去分詞で『誓って敵対している』ニュアンス。sworn friends（固い友情）とは対照的。">after years of being sworn enemies,</span><br>
+      I will ask their princess to marry me in a <span class="w" data-w="fairy-tale wedding!" data-m="おとぎ話のような結婚式！" data-n="fairy tale = おとぎ話（シンデレラ、白雪姫など）。fairy-tale + 名詞 でハイフンをつけると形容詞として使える。fairy-tale wedding = 夢のような（おとぎ話風の）結婚式。">fairy-tale wedding!</span>
+    </div>
+    <div class="cell ja">まもなくキノコ王国に着く。そこで長年の宿敵の姫に、おとぎ話のような結婚を申し込む！</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-guard">Koopa Troopa</span><br>Did he say marry their princess?</div>
+    <div class="cell ja">姫と結婚するって言った？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-guard">Koopa Troopa</span><br>
+      <span class="w" data-w="Doesn't she hate you?" data-m="彼女はあなたのことが嫌いでしょ？" data-n="否定疑問文：Doesn't she ～? = 彼女は～しないの？。確認・驚き・反論を表す。Doesn't she hate you? は『当然嫌いでしょ？』というニュアンス。">Doesn't she hate you?</span>
+    </div>
+    <div class="cell ja">あなたのこと嫌いでしょ？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      Of course she hates me. But <span class="w" data-w="that makes me love her all the more." data-m="それがかえって愛しさを増させる" data-n="all the more = それだけいっそう・かえって。because がなくても前の文脈を受けて『だからこそ』の意味を持つ。例：I love it all the more for its simplicity.">that makes me love her all the more.</span>
+    </div>
+    <div class="cell ja">もちろん嫌いだとも。だからこそいっそう愛しくなる。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      Her <span class="w" data-w="heart-shaped bangs," data-m="ハート形の前髪" data-n="bangs = 前髪（アメリカ英語）。イギリス英語では fringe。heart-shaped = ハート形の（-shaped は形を表す接尾辞）。">heart-shaped bangs,</span> the way she <span class="w" data-w="floats in the breeze," data-m="そよ風に揺れる・風に漂う" data-n="float = 浮かぶ・漂う。breeze = そよ風・微風。the way she floats = 彼女が漂う様子（the way + 主語 + 動詞 で『～する様子』を表す）。">floats in the breeze,</span> her <span class="w" data-w="immovable tiara." data-m="びくともしないティアラ" data-n="immovable = 動かない・不動の（im- = not の接頭辞 + movable）。tiara = 女性用宝冠・ティアラ。発音：/tiˈɑːrə/">immovable tiara.</span>
+    </div>
+    <div class="cell ja">ハート形の前髪、風にたなびく姿、びくともしないティアラ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      And when she sees this star...<br>
+      (chuckling) oh, <span class="w" data-w="wedding bells." data-m="結婚の鐘（幸せな結婚を示す表現）" data-n="wedding bells はイディオム。結婚式の鐘のことで、『もうすぐ結婚する・幸せな結婚が待っている』という慣用表現。">wedding bells.</span>
+    </div>
+    <div class="cell ja">彼女がこのスターを見たら…（笑い）ああ、結婚の鐘が鳴る。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-guard">Koopa Troopa</span><br>
+      Well, <span class="w" data-w="what if she says no?" data-m="もし断られたら？" data-n="what if ～? = もし～だったらどうする？。仮定・懸念を表す便利な表現。What if it rains?（雨が降ったら？）。">what if she says no?</span>
+    </div>
+    <div class="cell ja">でも、断られたら？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      Then I will <span class="w" data-w="power up" data-m="パワーアップする" data-n="power up は動詞で『強化する・エネルギーを上げる』の意味。名詞形は power-up（ハイフンあり）。">power up</span> with this star and <span class="w" data-w="destroy" data-m="破壊する・壊滅させる" data-n="発音：/dɪˈstrɔɪ/。destruction（破壊）、destructive（破壊的な）などが派生語。destroy = 完全に壊す（damage より強い）。">destroy</span> the Mushroom Kingdom!<br>
+      <span class="w" data-w="Prepare yourselves" data-m="覚悟しろ・準備しろ" data-n="Prepare yourself/yourselves for ～ = ～の準備をしろ（命令形）。yourself は単数、yourselves は複数。">Prepare yourselves</span> for the best wedding ever. <span class="w" data-w="It's gonna rock!" data-m="最高になるぞ！" data-n="rock は動詞で『最高だ・すごい』の意味（スラング）。This party rocks!（このパーティー最高！）。gonna = going to の口語形。">It's gonna rock!</span>
+    </div>
+    <div class="cell ja">ならスターでパワーアップしてキノコ王国を滅ぼす！史上最高の結婚式の準備をしろ。最高になるぞ！</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン15 -->
+<div class="scene" id="scene15">
+<p class="scene-label">シーン 15 — コング王国への旅</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      <span class="w" data-w="They're all counting on us." data-m="みんなが私たちを頼りにしている。" data-n="count on ～ = ～を頼りにする・あてにする。They're counting on us. は『彼らは私たちに頼っている』という責任の重さを伝えるフレーズ。">They're all counting on us.</span> <span class="w" data-w="No pressure." data-m="プレッシャーなし。（皮肉的に）" data-n="No pressure. は文字通り『プレッシャーはないよ』だが、実際には皮肉（sarcasm）として『まあプレッシャーじゃないけどね（でも実は大変）』の意味で使う。">No pressure.</span>
+    </div>
+    <div class="cell ja">みんなが頼りにしてる。プレッシャーじゃないけどね。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      My Toads, our <span class="w" data-w="days of terror" data-m="恐怖の日々" data-n="terror = 恐怖・テロ（発音：/ˈterər/）。days of terror = 恐怖が続いた日々。複数形 days で『続いた期間』を表す。">days of terror</span> are <span class="w" data-w="almost over." data-m="もうすぐ終わる" data-n="almost over = ほぼ終わり。over = 終わった（形容詞）。It's over.（終わった）。">almost over.</span><br>
+      <span class="w" data-w="With the help of" data-m="～の助けを借りて" data-n="with the help of ～ = ～の援助・協力を得て。with ～'s help とも言える。例：With the help of my friends, I finished it.（友達の助けを借りて完成させた）">With the help of</span> the Kong army, we will stop...
+    </div>
+    <div class="cell ja">私のキノピオたちよ、恐怖の日々はもうすぐ終わる。コング軍の助けを借りて止める…</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-guard">Guard</span><br>Uh, who's he?</div>
+    <div class="cell ja">あの、あれは誰？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      He's <span class="w" data-w="not important!" data-m="大した人物ではない・関係ない" data-n="not important = 重要ではない。He's not important here. のように使うと『この文脈では関係ない人物』というニュアンス。important の反対は unimportant または irrelevant。">not important!</span>
+    </div>
+    <div class="cell ja">大した人じゃないわ！</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      <span class="w" data-w="Nervous?" data-m="緊張してる？" data-n="Nervous? は Are you nervous? の省略形（口語）。nervous = 緊張した・不安な（発音：/ˈnɜːrvəs/）。excited との違い：nervous は不安感を含む、excited はポジティブなワクワク感。">Nervous?</span>
+    </div>
+    <div class="cell ja">緊張してる？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      Who? Me? <span class="w" data-w="(scoffs)" data-m="（鼻で笑う）" data-n="scoff = 鼻で笑う・あざ笑う（発音：/skɒf/）。(scoffs) はト書きで動作・様子を示す。">（scoffs）</span> Yes, a little. (chuckles)
+    </div>
+    <div class="cell ja">誰が？僕が？（鼻で笑う）…うん、ちょっとね。（笑い）</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      We're going on an adventure! Come on, guys!<br>
+      Hey, Mario. You know this guy?
+    </div>
+    <div class="cell ja">冒険に出るぞ！さあ行くよ！<br>ねえマリオ。この人知ってる？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>Uh...</div>
+    <div class="cell ja">えっと…</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      We're <span class="w" data-w="best friends." data-m="大親友" data-n="best friend = 一番の親友。best は good の最上級。We're best friends. は『私たちは大の仲良し』という決まり文句。">best friends.</span>
+    </div>
+    <div class="cell ja">大親友なんだ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>But are we?</div>
+    <div class="cell ja">そうかな…？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>Don't worry. I will protect you.</div>
+    <div class="cell ja">心配しないで。私が守ってあげる。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      A Toad <span class="w" data-w="brave enough to" data-m="～するのに十分勇敢な" data-n="brave enough to ～ = ～するほど勇敢な（enough + to不定詞）。He is old enough to drive.（運転できる年齢だ）と同じ構造。形容詞 + enough + to ＋動詞原形。">brave enough to</span> join me.
+    </div>
+    <div class="cell ja">私に加わるほど勇敢なキノピオね。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      <span class="w" data-w="I fear nothing." data-m="何も恐れない。" data-n="fear = 恐れる（動詞）。nothing = 何も～ない。I fear nothing. は『私は何も恐れない』という力強い宣言。Fear nothing.（何も恐れるな）という命令形も使われる。">I fear nothing.</span>
+    </div>
+    <div class="cell ja">何も恐れません。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      Well, <span class="w" data-w="that settles it." data-m="それで決まり・それで話は終わり" data-n="settle = 決着をつける・解決する。That settles it. は議論や迷いを終わらせる決まり文句。That's settled.（決まった）とも言う。">that settles it.</span> You're coming with us. Let's move.
+    </div>
+    <div class="cell ja">じゃあ決まりね。一緒に来なさい。行くわよ。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-toad">Toad</span><br>
+      (laughs excitedly) I said we're going on an adventure!
+    </div>
+    <div class="cell ja">（興奮して笑う）冒険に出るって言ったじゃないか！</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      <span class="w" data-w="Pretty incredible," data-m="かなりすごい・相当素晴らしい" data-n="pretty = かなり・相当（副詞）。very ほど強くなく、somewhat より強い。pretty incredible = quite amazing と同じ意味合い。">Pretty incredible,</span> huh?
+    </div>
+    <div class="cell ja">かなりすごいね？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-mario">Mario</span><br>
+      <span class="w" data-w="Mamma mia." data-m="なんてこった！（イタリア語の感嘆詞）" data-n="mamma mia はイタリア語由来の感嘆詞。驚き・感動・困惑などを表す。マリオはイタリア人というキャラクター設定から使われる。発音：/ˌmæmə ˈmiːə/">Mamma mia.</span>
+    </div>
+    <div class="cell ja">なんてこった。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-princess">Peach</span><br>
+      <span class="w" data-w="I'll never let anyone ruin this." data-m="誰にもこれを台無しにさせない。" data-n="let + 人 + 動詞原形 = 人に～させる。never let anyone ～ = 誰にも～させない。ruin = 台無しにする・壊す（発音：/ˈruːɪn/）。">I'll never let anyone ruin this.</span>
+    </div>
+    <div class="cell ja">誰にもこれを台無しにさせない。</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン16 -->
+<div class="scene" id="scene16">
+<p class="scene-label">シーン 16 — クッパの歌</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      ♪ <span class="w" data-w="Peach, you're so cool" data-m="ピーチ、君はとてもかっこいい" data-n="so cool = とてもかっこいい・素敵。cool は外見・性格・行動がかっこいい場合に広く使える。">Peach, you're so cool</span> ♪<br>
+      ♪ <span class="w" data-w="And with my star we're gonna rule" data-m="僕のスターで一緒に支配するんだ" data-n="gonna = going to の口語形。rule = 支配する・統治する。we're gonna rule = 私たちが支配する（未来の意図）。">And with my star we're gonna rule</span> ♪<br>
+      ♪ Peach, <span class="w" data-w="understand" data-m="わかってくれ（命令形）" data-n="understand は命令形で『わかってくれ・理解してくれ』の意。Understand? = わかった？（強い確認）。">understand</span> ♪<br>
+      ♪ I'm gonna love you <span class="w" data-w="till the very end" data-m="まさに最後まで" data-n="till = until の口語・詩的表現。the very end = まさに最後・本当の終わり（very は強調の副詞）。till the end of time（永遠に）も似た表現。">till the very end</span> ♪<br>
+      ♪ Peaches, Peaches, Peaches, Peaches, Peaches ♪<br>
+      ♪ <span class="w" data-w="I love you" data-m="愛してる" data-n="発音：/aɪ lʌv juː/。I love you は強い愛情表現（日本語の『好き』より強い感情を表す）。">I love you</span> ♪
+    </div>
+    <div class="cell ja">♪ ピーチ、君は最高 ♪<br>♪ 僕のスターで一緒に支配しよう ♪<br>♪ ピーチ、わかってくれ ♪<br>♪ まさに最後まで愛し続ける ♪<br>♪ ピーチ、ピーチ、ピーチ、ピーチ、ピーチ ♪<br>♪ 愛してる ♪</div>
+  </div>
+</div>
+</div>
+
+<!-- シーン17 -->
+<div class="scene" id="scene17">
+<p class="scene-label">シーン 17 — スパイの報告</p>
+<div class="card">
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-council">Kamek</span><br>
+      A <span class="w" data-w="report from our intelligence." data-m="情報部からの報告" data-n="intelligence = 諜報・インテリジェンス。intelligence agency = 諜報機関（CIA など）。our intelligence = 我々の情報部・スパイ網。">report from our intelligence.</span>
+    </div>
+    <div class="cell ja">情報部からの報告でございます。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-council">Kamek</span><br>
+      A <span class="w" data-w="mustachioed" data-m="口ひげを生やした" data-n="mustache（口ひげ）＋ -ed（形容詞を作る接尾辞）= mustachioed（口ひげを生やした）。発音：/məˈstæʃiːd/。bearded（ひげを生やした）と同じ作り方。">mustachioed</span> human has arrived in the Mushroom Kingdom.
+    </div>
+    <div class="cell ja">口ひげを生やした人間がキノコ王国に現れました。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-council">Kamek</span><br>
+      The princess has been training him.<br>
+      They are <span class="w" data-w="up to something," data-m="何かたくらんでいる" data-n="be up to something = 何かよくないことをたくらんでいる。What are you up to? = 何してるの？（中立）。They're up to something. = あいつら何かやってるぞ（疑念のニュアンス）。">up to something,</span> <span class="w" data-w="sire." data-m="陛下（王への呼びかけ）" data-n="sire は王・皇帝などへの敬称。Your Majesty（陛下）より口語的・中世風。ファンタジーや歴史劇でよく登場する。">sire.</span>
+    </div>
+    <div class="cell ja">姫様が彼を訓練しています。何かたくらんでいるようです、陛下。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      Sit. <span class="w" data-w="Jam with me." data-m="一緒に演奏しよう。" data-n="jam = 楽器を一緒に即興演奏する（ジャムセッション）。Jam with me. = 一緒にセッションしよう。jam には『渋滞』という意味もあるが、音楽文脈では演奏のこと。">Jam with me.</span>
+    </div>
+    <div class="cell ja">座れ。一緒に演奏しよう。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>This, uh, human, where did he come from?</div>
+    <div class="cell ja">その…人間とやら、どこから来た？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-council">Kamek</span><br>
+      We... <span class="w" data-w="aren't sure." data-m="確かではありません" data-n="aren't sure = わからない・確信がない。I'm not sure. は非常によく使われる表現で『確かではない・よくわからない』の丁寧な言い方。I don't know より柔らかいニュアンス。">aren't sure.</span>
+    </div>
+    <div class="cell ja">わかりかねます…</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      Does the princess <span class="w" data-w="like him?" data-m="彼のことが好きなの？" data-n="like ＋ 人 = 人のことが好き。Does she like him? は三人称単数の疑問形（does + 主語 + 動詞の原形）。">like him?</span>
+    </div>
+    <div class="cell ja">姫はあいつのことが好きなのか？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-council">Kamek</span><br>
+      Oh, sire. <span class="w" data-w="Look in the mirror." data-m="鏡を見てください。（自分の容姿に自信を持て）" data-n="Look in the mirror. = 鏡を見ろ（文字通り）。ここでは『あなたはこんなに立派なのに心配しなくていい』という追従（お世辞）のニュアンス。">Look in the mirror.</span><br>
+      <span class="w" data-w="You have nothing to worry about." data-m="心配することは何もありません。" data-n="have nothing to ～ = ～することは何もない。You have nothing to worry about. はよく使われる慰め・安心させるフレーズ。There's nothing to worry about. とも言う。">You have nothing to worry about.</span>
+    </div>
+    <div class="cell ja">陛下。鏡をご覧ください。心配なさることは何もありません。</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      I know that. <span class="w" data-w="I'm not threatened." data-m="脅威を感じていない。" data-n="threatened = 脅威を感じた・怯えた（形容詞）。I'm not threatened = 全然怖くない・脅かされていない。feel threatened（脅威を感じる）という表現もよく使われる。">I'm not threatened.</span><br>
+      Find out who he is and what they're <span class="w" data-w="planning!" data-m="計画している！" data-n="plan = 計画する（動詞）。現在進行形 planning は『今まさに計画している』こと。find out ～ = ～を調べる・突き止める。">planning!</span>
+    </div>
+    <div class="cell ja">わかってる。怖くなどない。あいつが何者で何を企てているか調べろ！</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-council">Kamek</span><br>
+      I'm <span class="w" data-w="on it," data-m="任せてください・すぐやります" data-n="I'm on it. = I'm taking care of it.（対応しています）の口語形。上司の指示に素早く答える定番フレーズ。On it! とも言う。">on it,</span> sire.<br>
+      May I <span class="w" data-w="lift the cover?" data-m="カバーを持ち上げてもよいですか？" data-n="lift = 持ち上げる（発音：/lɪft/）。May I ～? = ～してもよいですか？（丁寧な許可の表現）。Can I ～? より改まった表現。">lift the cover?</span>
+    </div>
+    <div class="cell ja">お任せください、陛下。カバーを上げてもよいですか？</div>
+  </div>
+  <div class="row">
+    <div class="cell en"><span class="speaker sp-bowser">Bowser</span><br>
+      Not yet.<br>
+      <span class="w" data-w="Pain is the best teacher." data-m="痛みこそ最良の師。（苦労して初めて学べる）" data-n="Pain is the best teacher. は諺的表現。苦しい経験から最もよく学べるという意味。類似：No pain, no gain.（痛みなくして得るものなし）">Pain is the best teacher.</span>
+    </div>
+    <div class="cell ja">まだだ。痛みこそ最良の師だ。</div>
+  </div>
+</div>
+</div>
+
+
+</main>
+
+<footer>🍄 黄色い下線の単語をタップして解説を確認しよう！続きのセリフも追加できます。</footer>
+
+<!-- Hamburger FAB -->
+<button class="fab" id="fabBtn" aria-label="目次を開く">&#9776;</button>
+
+<!-- TOC overlay -->
+<div class="toc-overlay" id="tocOverlay"></div>
+
+<!-- TOC panel -->
+<div class="toc-panel" id="tocPanel" role="navigation" aria-label="目次">
+  <div class="toc-head">
+    <h2>📋 目次</h2>
+    <button class="toc-close" id="tocClose" aria-label="閉じる">×</button>
+  </div>
+  <ul class="toc-list">
+    <li><a href="#scene1" class="toc-link"><span class="toc-num">1</span>クッパ登場</a></li>
+    <li><a href="#scene2" class="toc-link"><span class="toc-num">2</span>CMの話</a></li>
+    <li><a href="#scene3" class="toc-link"><span class="toc-num">3</span>スパイク登場</a></li>
+    <li><a href="#scene4" class="toc-link"><span class="toc-num">4</span>初仕事</a></li>
+    <li><a href="#scene5" class="toc-link"><span class="toc-num">5</span>家族の食卓</a></li>
+    <li><a href="#scene6" class="toc-link"><span class="toc-num">6</span>地下へ</a></li>
+    <li><a href="#scene7" class="toc-link"><span class="toc-num">7</span>キノコ王国・キノピオ登場</a></li>
+    <li><a href="#scene8" class="toc-link"><span class="toc-num">8</span>宮殿へ</a></li>
+    <li><a href="#scene9" class="toc-link"><span class="toc-num">9</span>クッパの脅威・評議会</a></li>
+    <li><a href="#scene10" class="toc-link"><span class="toc-num">10</span>ピーチとマリオ出会い</a></li>
+    <li><a href="#scene11" class="toc-link"><span class="toc-num">11</span>マリオに同行を迫る</a></li>
+    <li><a href="#scene12" class="toc-link"><span class="toc-num">12</span>トレーニング・パワーアップ</a></li>
+    <li><a href="#scene13" class="toc-link"><span class="toc-num">13</span>励ましの会話</a></li>
+    <li><a href="#scene14" class="toc-link"><span class="toc-num">14</span>クッパの野望</a></li>
+    <li><a href="#scene15" class="toc-link"><span class="toc-num">15</span>コング王国への旅</a></li>
+    <li><a href="#scene16" class="toc-link"><span class="toc-num">16</span>クッパの歌</a></li>
+    <li><a href="#scene17" class="toc-link"><span class="toc-num">17</span>スパイの報告</a></li>
+  </ul>
+  <div class="toc-footer">タップしてシーンへジャンプ</div>
+</div>
+
+<script>
+/* ── Popup ── */
+const popup = document.getElementById('popup');
+const pwEl  = document.getElementById('pw');
+const pmEl  = document.getElementById('pm');
+const pnEl  = document.getElementById('pn');
+
+function positionPopup(refEl) {
+  popup.style.visibility = 'hidden';
+  popup.style.display = 'block';
+  const rect = refEl.getBoundingClientRect();
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const pw = popup.offsetWidth, ph = popup.offsetHeight;
+  /* position:fixed は viewport 相対なので scrollY は不要 */
+  let top  = rect.bottom + 8;
+  let left = rect.left;
+  if (left + pw > vw - 12) left = vw - pw - 12;
+  if (left < 12) left = 12;
+  if (top + ph > vh - 12) top = rect.top - ph - 8;
+  if (top < 12) top = 12;
+  popup.style.top  = top  + 'px';
+  popup.style.left = left + 'px';
+  popup.style.visibility = 'visible';
+}
+
+function openPopup(el) {
+  pwEl.textContent = el.dataset.w || el.textContent.trim();
+  pmEl.textContent = el.dataset.m || '';
+  const note = el.dataset.n || '';
+  if (note) { pnEl.textContent = note; pnEl.style.display = 'block'; }
+  else { pnEl.style.display = 'none'; }
+  positionPopup(el);
+}
+
+/* click works on both desktop and mobile (iOS needs cursor:pointer → already set) */
+document.addEventListener('click', function(e) {
+  const w = e.target.closest('.w');
+  if (w) { e.stopPropagation(); openPopup(w); return; }
+  if (!e.target.closest('#popup')) popup.style.display = 'none';
+});
+
+document.getElementById('popclose').addEventListener('click', function(e) {
+  e.stopPropagation();
+  popup.style.display = 'none';
+});
+
+/* ── TOC ── */
+const fabBtn     = document.getElementById('fabBtn');
+const tocPanel   = document.getElementById('tocPanel');
+const tocOverlay = document.getElementById('tocOverlay');
+const tocClose   = document.getElementById('tocClose');
+
+function openTOC()  { tocPanel.classList.add('open'); tocOverlay.classList.add('open'); fabBtn.innerHTML = '&#10005;'; }
+function closeTOC() { tocPanel.classList.remove('open'); tocOverlay.classList.remove('open'); fabBtn.innerHTML = '&#9776;'; }
+
+fabBtn.addEventListener('click', function() {
+  tocPanel.classList.contains('open') ? closeTOC() : openTOC();
+});
+tocClose.addEventListener('click', closeTOC);
+tocOverlay.addEventListener('click', closeTOC);
+
+/* TOC links: close panel, then scroll smoothly */
+document.querySelectorAll('.toc-link').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    closeTOC();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (!target) return;
+    setTimeout(function() {
+      const y = target.getBoundingClientRect().top + window.scrollY - 90;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }, 260); /* wait for panel slide-out */
+  });
+});
+</script>
+</body>
+</html>
