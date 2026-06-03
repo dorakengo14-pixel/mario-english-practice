@@ -77,6 +77,100 @@ main{padding:1rem;max-width:900px;margin:0 auto}
   .toc-panel{width:100%;right:-105%}
 }
 footer{text-align:center;font-size:12px;color:#aaa;padding:2rem 1rem 5rem}
+
+/* ── Checkbox ── */
+.row{position:relative}
+.row-check{
+  position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  width:17px;height:17px;cursor:pointer;z-index:3;
+  accent-color:#e8281e;opacity:.3;transition:opacity .15s
+}
+.row-check:hover{opacity:1}
+.row.row-checked>.row-check{opacity:1}
+.row.row-checked{background:linear-gradient(to right,#fff 55%,#fff8e1)}
+.cell.ja{padding-right:28px}
+.filter-on .row:not(.row-checked){display:none}
+.filter-on .scene-empty{display:none}
+
+/* ── Speaker Picker ── */
+#sp-picker{
+  display:none;position:fixed;z-index:3000;
+  background:#1c1c1e;color:#f0f0f0;border-radius:12px;
+  padding:12px 14px 10px;max-width:290px;min-width:230px;
+  box-shadow:0 6px 28px rgba(0,0,0,.5);font-size:13px
+}
+#sp-picker.show{display:block}
+.spp-head{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;color:#888;margin-bottom:9px
+}
+.spp-close-btn{
+  background:none;border:none;color:#888;font-size:18px;
+  cursor:pointer;line-height:1;padding:2px 4px
+}
+.spp-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.spp-btn{
+  padding:6px 8px;border-radius:6px;cursor:pointer;
+  font-size:11px;font-weight:700;text-align:center;
+  border:2px solid transparent;transition:border .1s;user-select:none
+}
+.spp-btn:hover,.spp-btn.cur{border-color:#ffd54f}
+.spp-none{
+  grid-column:1/-1;margin-top:5px;padding:6px;border-radius:6px;
+  cursor:pointer;font-size:11px;font-weight:600;text-align:center;
+  background:#2a2a2a;color:#aaa;border:2px solid transparent;
+  transition:border .1s;user-select:none
+}
+.spp-none:hover{border-color:#ffd54f}
+.speaker{cursor:pointer;user-select:none}
+.speaker:hover{opacity:.8}
+.sp-none{background:#e8e8e8;color:#888}
+.sp-custom{background:#f0e8ff;color:#5a1a8a}
+
+/* ── Speaker trigger (rows without badge) ── */
+.sp-trigger{
+  display:inline-block;font-size:10px;cursor:pointer;
+  opacity:.2;margin-right:5px;vertical-align:middle;
+  transition:opacity .15s;user-select:none;line-height:1
+}
+.sp-trigger:hover{opacity:.85}
+.row:hover .sp-trigger{opacity:.45}
+
+/* ── Custom speaker input in picker ── */
+#sp-picker{max-width:310px;min-width:250px}
+.spp-grid{grid-template-columns:1fr 1fr 1fr}
+.spp-custom-row{
+  grid-column:1/-1;margin-top:8px;
+  display:flex;gap:5px;border-top:1px solid #333;padding-top:8px
+}
+.spp-input{
+  flex:1;background:#2a2a2a;border:1px solid #444;
+  border-radius:6px;color:#f0f0f0;padding:5px 8px;
+  font-size:12px;outline:none;min-width:0
+}
+.spp-input:focus{border-color:#ffd54f}
+.spp-input::placeholder{color:#666}
+.spp-add-btn{
+  background:#e8281e;color:#fff;border:none;border-radius:6px;
+  padding:5px 10px;font-size:12px;cursor:pointer;font-weight:700;
+  white-space:nowrap;flex-shrink:0
+}
+.spp-add-btn:hover{opacity:.85}
+.spp-sep{grid-column:1/-1;font-size:10px;color:#555;margin-top:5px}
+
+/* ── Filter FAB ── */
+.fab-filter{
+  position:fixed;top:5.4rem;right:1rem;z-index:500;
+  width:44px;height:44px;border-radius:50%;
+  background:#2c2c2a;color:#ccc;border:none;
+  font-size:18px;cursor:pointer;
+  box-shadow:0 3px 12px rgba(0,0,0,.3);
+  display:flex;align-items:center;justify-content:center;
+  line-height:1;transition:background .15s,color .15s
+}
+.fab-filter.on{background:#e8281e;color:#fff}
+.fab-filter:active{opacity:.8}
+@media(max-width:560px){.cell.ja{padding-right:26px}}
 </style>
 </head>
 <body>
@@ -2463,6 +2557,18 @@ footer{text-align:center;font-size:12px;color:#aaa;padding:2rem 1rem 5rem}
 
 <footer>🍄 黄色い下線の単語をタップして解説を確認しよう！続きのセリフも追加できます。</footer>
 
+<!-- Speaker Picker popup -->
+<div id="sp-picker" role="dialog" aria-label="話者を変更">
+  <div class="spp-head">
+    <span>🎙 話者を変更</span>
+    <button class="spp-close-btn" id="sppClose" aria-label="閉じる">×</button>
+  </div>
+  <div class="spp-grid" id="sppGrid"></div>
+</div>
+
+<!-- Filter FAB -->
+<button class="fab-filter" id="filterFab" title="チェックした行のみ表示">☆</button>
+
 <!-- Hamburger FAB -->
 <button class="fab" id="fabBtn" aria-label="目次を開く">&#9776;</button>
 
@@ -2582,6 +2688,340 @@ document.querySelectorAll('.toc-link').forEach(function(a) {
     }, 260); /* wait for panel slide-out */
   });
 });
+
+/* ════════════════════════════════════════════
+   SPEAKER PICKER  (v2 — all rows editable)
+════════════════════════════════════════════ */
+const SP_LIST = [
+  { name:'None',         cls:'sp-none'     },
+  { name:'Mario',        cls:'sp-mario'    },
+  { name:'Luigi',        cls:'sp-luigi'    },
+  { name:'Peach',        cls:'sp-princess' },
+  { name:'Toad',         cls:'sp-toad'     },
+  { name:'Bowser',       cls:'sp-bowser'   },
+  { name:'DK',           cls:'sp-dk'       },
+  { name:'Diddy Kong',   cls:'sp-diddy'    },
+  { name:'Cranky Kong',  cls:'sp-cranky'   },
+  { name:'Kamek',        cls:'sp-guard'    },
+  { name:'Penguin King', cls:'sp-penguin'  },
+  { name:'Council',      cls:'sp-council'  },
+  { name:'Spike',        cls:'sp-spike'    },
+  { name:'Mom',          cls:'sp-mom'      },
+  { name:'Dad',          cls:'sp-dad'      },
+];
+const SP_CLASSES = SP_LIST.map(function(s){ return s.cls; });
+
+const spPicker = document.getElementById('sp-picker');
+const sppGrid  = document.getElementById('sppGrid');
+const sppClose = document.getElementById('sppClose');
+var   activeRow = null; /* .row currently being edited */
+
+/* Build picker grid fresh each time the picker opens */
+function buildGrid(currentCls, currentName) {
+  sppGrid.innerHTML = '';
+
+  /* Built-in speakers */
+  SP_LIST.forEach(function(sp) {
+    var btn = document.createElement('div');
+    btn.className = 'spp-btn ' + sp.cls;
+    btn.textContent = sp.name;
+    btn.dataset.cls  = sp.cls;
+    btn.dataset.name = sp.name;
+    if (sp.cls === currentCls) btn.classList.add('cur');
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!activeRow) return;
+      applySpeaker(activeRow, sp);
+      spPicker.classList.remove('show');
+      activeRow = null;
+    });
+    sppGrid.appendChild(btn);
+  });
+
+  /* Divider + custom speakers from localStorage */
+  var customs = JSON.parse(localStorage.getItem('mario_sp_custom') || '[]');
+  if (customs.length) {
+    var sep = document.createElement('div');
+    sep.className = 'spp-sep';
+    sep.textContent = '─ カスタム ─';
+    sppGrid.appendChild(sep);
+    customs.forEach(function(sp) {
+      var btn = document.createElement('div');
+      btn.className = 'spp-btn sp-custom';
+      btn.textContent = sp.name;
+      btn.dataset.cls  = 'sp-custom';
+      btn.dataset.name = sp.name;
+      /* Highlight if this custom is the current speaker */
+      if (currentCls === 'sp-custom' && sp.name === currentName) btn.classList.add('cur');
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (!activeRow) return;
+        applySpeaker(activeRow, { name: sp.name, cls: 'sp-custom' });
+        spPicker.classList.remove('show');
+        activeRow = null;
+      });
+      sppGrid.appendChild(btn);
+    });
+  }
+
+  /* Custom input row */
+  var cRow = document.createElement('div');
+  cRow.className = 'spp-custom-row';
+  var inp = document.createElement('input');
+  inp.type = 'text'; inp.className = 'spp-input';
+  inp.placeholder = '新しい話者を追加…'; inp.maxLength = 20;
+  var addBtn = document.createElement('button');
+  addBtn.className = 'spp-add-btn'; addBtn.textContent = '追加';
+
+  function doAdd() {
+    var name = inp.value.trim();
+    if (!name) return;
+    /* Save to custom list if not duplicate */
+    var list = JSON.parse(localStorage.getItem('mario_sp_custom') || '[]');
+    if (!list.find(function(c){ return c.name === name; })) {
+      list.push({ name: name });
+      localStorage.setItem('mario_sp_custom', JSON.stringify(list));
+    }
+    if (activeRow) {
+      applySpeaker(activeRow, { name: name, cls: 'sp-custom' });
+      spPicker.classList.remove('show');
+      activeRow = null;
+    }
+    inp.value = '';
+  }
+  addBtn.addEventListener('click', function(e){ e.stopPropagation(); doAdd(); });
+  inp.addEventListener('keydown', function(e){
+    if (e.key === 'Enter') { e.stopPropagation(); doAdd(); }
+  });
+  inp.addEventListener('click', function(e){ e.stopPropagation(); });
+  cRow.appendChild(inp); cRow.appendChild(addBtn);
+  sppGrid.appendChild(cRow);
+}
+
+/* Apply a speaker choice to a row */
+function applySpeaker(row, sp) {
+  var enCell = row.querySelector('.cell.en');
+  if (!enCell) return;
+  var badge = enCell.querySelector('.speaker');
+
+  if (sp.cls === 'sp-none') {
+    /* None = remove badge */
+    if (badge) {
+      if (badge.nextSibling && badge.nextSibling.nodeName === 'BR') badge.nextSibling.remove();
+      badge.remove();
+    }
+    saveSpeakerData(row.dataset.rowkey, null);
+    return;
+  }
+
+  if (badge) {
+    /* Update existing badge */
+    SP_CLASSES.forEach(function(c){ badge.classList.remove(c); });
+    badge.classList.remove('sp-custom');
+    badge.classList.add(sp.cls);
+    badge.textContent = sp.name;
+  } else {
+    /* Create new badge */
+    badge = document.createElement('span');
+    badge.className = 'speaker ' + sp.cls;
+    badge.dataset.spkey = row.dataset.rowkey;
+    badge.textContent = sp.name;
+    var br = document.createElement('br');
+    enCell.prepend(br);
+    enCell.prepend(badge);
+  }
+  saveSpeakerData(row.dataset.rowkey, { name: sp.name, cls: sp.cls });
+}
+
+/* Open picker, positioned near a reference element */
+function openPicker(row, refEl) {
+  activeRow = row;
+  var badge = row.querySelector('.speaker');
+  var curCls  = 'sp-none';
+  var curName = '';
+  if (badge) {
+    curCls  = SP_CLASSES.find(function(c){ return badge.classList.contains(c); }) || 'sp-custom';
+    curName = badge.textContent;
+  }
+  buildGrid(curCls, curName);
+  positionSpPicker(refEl);
+}
+
+function positionSpPicker(refEl) {
+  spPicker.style.visibility = 'hidden';
+  spPicker.classList.add('show');
+  var rect = refEl.getBoundingClientRect();
+  var vw = window.innerWidth, vh = window.innerHeight;
+  var pw = spPicker.offsetWidth, ph = spPicker.offsetHeight;
+  var top  = rect.bottom + 6;
+  var left = rect.left;
+  if (left + pw > vw - 12) left = vw - pw - 12;
+  if (left < 12) left = 12;
+  if (top  + ph > vh - 12) top = rect.top - ph - 6;
+  if (top  < 12) top = 12;
+  spPicker.style.top  = top  + 'px';
+  spPicker.style.left = left + 'px';
+  spPicker.style.visibility = 'visible';
+}
+
+sppClose.addEventListener('click', function(e) {
+  e.stopPropagation();
+  spPicker.classList.remove('show');
+  activeRow = null;
+});
+
+/* Document-level click routing */
+document.addEventListener('click', function(e) {
+  /* Word annotation — let existing handler take it */
+  if (e.target.closest('.w')) return;
+
+  /* Speaker badge */
+  var sp = e.target.closest('.speaker');
+  if (sp) {
+    e.stopPropagation();
+    popup.style.display = 'none';
+    var row = sp.closest('.row');
+    if (row) openPicker(row, sp);
+    return;
+  }
+  /* Speaker trigger button */
+  var trig = e.target.closest('.sp-trigger');
+  if (trig) {
+    e.stopPropagation();
+    popup.style.display = 'none';
+    var row = trig.closest('.row');
+    if (row) openPicker(row, trig);
+    return;
+  }
+  /* Outside picker → close */
+  if (!e.target.closest('#sp-picker')) {
+    spPicker.classList.remove('show');
+    activeRow = null;
+  }
+});
+
+/* Persistence */
+function saveSpeakerData(key, val) {
+  if (!key) return;
+  var data = JSON.parse(localStorage.getItem('mario_sp') || '{}');
+  data[key] = val;
+  localStorage.setItem('mario_sp', JSON.stringify(data));
+}
+function loadSpeakerData() {
+  var data = JSON.parse(localStorage.getItem('mario_sp') || '{}');
+  Object.keys(data).forEach(function(key) {
+    var val = data[key];
+    var row = document.querySelector('[data-rowkey="' + key + '"]');
+    if (!row) return;
+    var enCell = row.querySelector('.cell.en');
+    if (!enCell) return;
+    var badge = enCell.querySelector('.speaker');
+    if (!val) { /* None → ensure no badge */
+      if (badge) {
+        if (badge.nextSibling && badge.nextSibling.nodeName === 'BR') badge.nextSibling.remove();
+        badge.remove();
+      }
+      return;
+    }
+    if (badge) {
+      SP_CLASSES.forEach(function(c){ badge.classList.remove(c); });
+      badge.classList.remove('sp-custom');
+      badge.classList.add(val.cls);
+      badge.textContent = val.name;
+    } else {
+      badge = document.createElement('span');
+      badge.className = 'speaker ' + val.cls;
+      badge.dataset.spkey = key;
+      badge.textContent = val.name;
+      var br = document.createElement('br');
+      enCell.prepend(br);
+      enCell.prepend(badge);
+    }
+  });
+}
+
+/* ════════════════════════════════════════════
+   CHECKBOX + FILTER
+════════════════════════════════════════════ */
+function initRows() {
+  document.querySelectorAll('.scene').forEach(function(scene) {
+    var sid = scene.id || 'scene0';
+    scene.querySelectorAll('.row').forEach(function(row, ri) {
+      var key = sid + '-' + ri;
+      row.dataset.rowkey = key;
+
+      /* Assign spkey to existing speaker badge */
+      var badge = row.querySelector('.speaker');
+      if (badge) badge.dataset.spkey = key;
+
+      /* 🎙 trigger button in Japanese cell */
+      var jaCell = row.querySelector('.cell.ja');
+      if (jaCell) {
+        var trig = document.createElement('span');
+        trig.className = 'sp-trigger';
+        trig.textContent = '🎙';
+        trig.title = '話者を設定・変更';
+        jaCell.prepend(trig);
+      }
+
+      /* Checkbox (absolute right edge of row) */
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.className = 'row-check';
+      cb.title = 'チェック';
+      cb.addEventListener('change', function() {
+        row.classList.toggle('row-checked', cb.checked);
+        saveCheckData(key, cb.checked);
+        if (filterOn) updateSceneVisibility();
+      });
+      row.appendChild(cb);
+    });
+  });
+}
+
+function saveCheckData(key, val) {
+  var data = JSON.parse(localStorage.getItem('mario_cb') || '{}');
+  if (val) data[key] = 1; else delete data[key];
+  localStorage.setItem('mario_cb', JSON.stringify(data));
+}
+function loadCheckData() {
+  var data = JSON.parse(localStorage.getItem('mario_cb') || '{}');
+  Object.keys(data).forEach(function(key) {
+    var row = document.querySelector('[data-rowkey="' + key + '"]');
+    if (!row) return;
+    row.classList.add('row-checked');
+    var cb = row.querySelector('.row-check');
+    if (cb) cb.checked = true;
+  });
+}
+
+/* ── Filter FAB ── */
+const filterFab = document.getElementById('filterFab');
+var filterOn = false;
+
+function updateSceneVisibility() {
+  document.querySelectorAll('.scene').forEach(function(scene) {
+    var rows = scene.querySelectorAll('.row');
+    var anyChecked = Array.from(rows).some(function(r) {
+      return r.classList.contains('row-checked');
+    });
+    scene.style.display = (filterOn && !anyChecked) ? 'none' : '';
+  });
+}
+
+filterFab.addEventListener('click', function() {
+  filterOn = !filterOn;
+  filterFab.classList.toggle('on', filterOn);
+  filterFab.textContent = filterOn ? '★' : '☆';
+  filterFab.title = filterOn ? 'すべて表示に戻す' : 'チェックした行のみ表示';
+  document.querySelector('main').classList.toggle('filter-on', filterOn);
+  updateSceneVisibility();
+});
+
+/* ── Init ── */
+initRows();
+loadCheckData();
+loadSpeakerData();
 </script>
 </body>
 </html>
